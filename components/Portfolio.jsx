@@ -1,0 +1,590 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Code, Briefcase, GraduationCap, Award, Moon, Sun, Menu, X } from 'lucide-react';
+
+// Composant principal du portfolio
+const Portfolio = () => {
+  const [darkMode, setDarkMode] = useState(true);
+  const [activeSection, setActiveSection] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Données du portfolio basées sur le CV
+  const portfolioData = {
+    hero: {
+      name: "Raphaël ABOMBA",
+      title: "Software Engineering Student",
+      tagline: "Building the future, one line of code at a time",
+      description: "Passionate developer specializing in web development and data science"
+    },
+    about: {
+      bio: "Dynamique, motivé avec un esprit analytique et d'équipe. Je souhaite apporter ma pierre à l'édifice dans le domaine du Développement et de la Data Science. Actuellement à la recherche d'une opportunité de stage pour mettre en pratique mes compétences tout en acquérant de nouvelles expériences professionnelles.",
+      location: "Douala, Cameroon",
+      email: "bryanseidy@gmail.com",
+      phone: "+237 659 993 077"
+    },
+    skills: [
+      { name: "HTML/CSS", level: 90, icon: "🎨" },
+      { name: "JavaScript", level: 85, icon: "⚡" },
+      { name: "TypeScript", level: 80, icon: "💎" },
+      { name: "React.js", level: 85, icon: "⚛️" },
+      { name: "Next.js", level: 80, icon: "🚀" },
+      { name: "Node.js", level: 75, icon: "💚" },
+      { name: "Python", level: 80, icon: "🐍" },
+      { name: "PHP", level: 75, icon: "🐘" },
+      { name: "MongoDB", level: 70, icon: "🍃" },
+      { name: "MySQL", level: 75, icon: "🐬" },
+      { name: "Git", level: 85, icon: "🔧" },
+      { name: "WordPress", level: 70, icon: "📝" }
+    ],
+    projects: [
+      {
+        title: "CIVIKA",
+        description: "Première plateforme panafricaine dédiée aux Organisations de la Société Civile (OSC). Elle connecte, outille et valorise les acteurs du changement.",
+        tech: ["React", "Node.js", "MongoDB", "Express.js"],
+        image: "🌍",
+        period: "Août - Sept 2024",
+        type: "Web Collaborative App"
+      },
+      {
+        title: "Cinema Scraper",
+        description: "Outil d'automatisation pour extraire les horaires de séances de cinéma, avec matching intelligent de films et export CSV. Interface GUI moderne avec thème clair/sombre.",
+        tech: ["Python", "Selenium", "Tkinter", "Pandas"],
+        image: "🎬",
+        period: "Sept 2024",
+        type: "Automation Tool"
+      },
+      {
+        title: "Sessrail",
+        description: "Plateforme de réseau ferroviaire régional avec suivi en temps réel, design responsive et cartes interactives pour la planification d'itinéraires.",
+        tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Express.js"],
+        image: "🚄",
+        period: "2024",
+        type: "Transportation Platform"
+      },
+      {
+        title: "Patrie Art",
+        description: "Site web pour l'association culturelle Patrie Art, présentant les événements artistiques et mettant en relation artistes et public.",
+        tech: ["HTML", "CSS", "JavaScript", "PHP"],
+        image: "🎭",
+        period: "Août - Oct 2024",
+        type: "Association Website"
+      },
+      {
+        title: "Builder Brothers",
+        description: "Site vitrine pour entreprise de construction avec gestion de projets, implémentation de base de données et système de maintenance.",
+        tech: ["React", "Node.js", "MySQL"],
+        image: "🏗️",
+        period: "Mai 2024",
+        type: "Corporate Website"
+      },
+      {
+        title: "Art Sous Le Manguier",
+        description: "Site WordPress pour reportages artistiques avec système de matching automatique d'artistes et suivi de reportages.",
+        tech: ["WordPress", "PHP", "MySQL"],
+        image: "🎨",
+        period: "Oct 2024",
+        type: "Media Platform"
+      }
+    ],
+    experience: [
+      {
+        title: "Software Engineering Intern",
+        company: "WE TELL Africa Group",
+        period: "Juillet - Sept 2024",
+        location: "Douala",
+        tasks: [
+          "Conception et réalisation d'une application de smart gestion des stages",
+          "Manipulation du langage C et conception d'une application de gestion d'étudiants",
+          "Manipulation du langage Python et conception d'une application de gestion de mots de passes"
+        ]
+      },
+      {
+        title: "Software Engineering Intern",
+        company: "Patrie Art",
+        period: "Août - Oct 2024",
+        location: "Douala",
+        tasks: [
+          "Conception et implémentation du site web de l'association Patrie Art"
+        ]
+      },
+      {
+        title: "IT Maintenance Intern",
+        company: "SECEL",
+        period: "Juin - Août 2022",
+        location: "Douala",
+        tasks: [
+          "Identification des ressources nécessaires à la résolution d'un dysfonctionnement",
+          "Installation, entretien et dépannage des équipements informatiques",
+          "Réalisation d'un câblage réseau de matériels informatiques"
+        ]
+      }
+    ],
+    education: [
+      {
+        degree: "BTS en Génie Logiciel",
+        institution: "Institut Universitaire du Golfe de Guinée (IUGG ISTA)",
+        year: "2024",
+        location: "Douala"
+      },
+      {
+        degree: "Baccalauréat série D",
+        institution: "Lycée Général Leclerc",
+        year: "2022",
+        location: "Yaoundé"
+      }
+    ],
+    certifications: [
+      {
+        title: "Attestation Sécurité Informatique",
+        issuer: "ALISON USA",
+        year: "2024"
+      },
+      {
+        title: "Attestation en Programmation Web",
+        issuer: "IME Douala",
+        year: "2022"
+      },
+      {
+        title: "Attestation Réseau Informatique",
+        issuer: "ISTIA Yaoundé",
+        year: "2022"
+      }
+    ]
+  };
+
+  const ScrollReveal = ({ children, delay = 0 }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => setIsVisible(true), delay);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      };
+    }, [delay]);
+
+    return (
+      <div
+        ref={ref}
+        className={`transition-all duration-1000 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+      >
+        {children}
+      </div>
+    );
+  };
+
+  return (
+    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrollY > 50 ? (darkMode ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg' : 'bg-white/95 backdrop-blur-lg shadow-lg') : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              RA
+            </div>
+            
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-8">
+              {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  className={`capitalize transition-all duration-300 hover:text-blue-500 ${
+                    activeSection === section ? 'text-blue-500' : ''
+                  }`}
+                >
+                  {section}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="p-2 rounded-full hover:bg-gray-800 transition-all duration-300"
+              >
+                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="md:hidden p-2"
+              >
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className={`md:hidden ${darkMode ? 'bg-gray-800' : 'bg-white'} border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+            <div className="px-6 py-4 space-y-3">
+              {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block capitalize py-2 hover:text-blue-500 transition-colors"
+                >
+                  {section}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"
+               style={{ top: '20%', left: '10%', animationDuration: '4s' }} />
+          <div className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
+               style={{ bottom: '20%', right: '10%', animationDuration: '6s', animationDelay: '2s' }} />
+        </div>
+
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto"
+             style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
+          <div className="space-y-6 animate-fade-in">
+            <h1 className="text-6xl md:text-8xl font-bold mb-4 animate-slide-up">
+              {portfolioData.hero.name}
+            </h1>
+            <p className="text-2xl md:text-3xl text-blue-400 mb-6 animate-slide-up"
+               style={{ animationDelay: '0.2s' }}>
+              {portfolioData.hero.title}
+            </p>
+            <p className="text-xl md:text-2xl mb-8 opacity-80 animate-slide-up"
+               style={{ animationDelay: '0.4s' }}>
+              {portfolioData.hero.tagline}
+            </p>
+            <a
+              href="#projects"
+              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl animate-slide-up"
+              style={{ animationDelay: '0.6s' }}
+            >
+              See My Work
+            </a>
+          </div>
+          
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <ChevronDown className="w-8 h-8 opacity-50" />
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className="max-w-6xl mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              About Me
+            </h2>
+          </ScrollReveal>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <ScrollReveal delay={200}>
+              <div className="space-y-6">
+                <p className="text-lg leading-relaxed opacity-90">
+                  {portfolioData.about.bio}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <Mail className="w-5 h-5 text-blue-500" />
+                    <span>{portfolioData.about.email}</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl">📍</span>
+                    <span>{portfolioData.about.location}</span>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+            
+            <ScrollReveal delay={400}>
+              <div className="flex justify-center">
+                <div className="w-72 h-72 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 hover:scale-105 transition-transform duration-500">
+                  <div className={`w-full h-full rounded-full ${darkMode ? 'bg-gray-800' : 'bg-white'} flex items-center justify-center text-8xl`}>
+                    👨‍💻
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Skills & Tools
+            </h2>
+            <p className="text-center text-xl opacity-70 mb-12">I constantly try to improve</p>
+          </ScrollReveal>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {portfolioData.skills.map((skill, index) => (
+              <ScrollReveal key={skill.name} delay={index * 50}>
+                <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}>
+                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {skill.icon}
+                  </div>
+                  <h3 className="font-semibold mb-3">{skill.name}</h3>
+                  <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000"
+                      style={{ width: `${skill.level}%` }}
+                    />
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Featured Projects
+            </h2>
+          </ScrollReveal>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {portfolioData.projects.map((project, index) => (
+              <ScrollReveal key={project.title} delay={index * 100}>
+                <div className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl group`}>
+                  <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-500">
+                    {project.image}
+                  </div>
+                  <div className="p-6">
+                    <div className="text-sm text-blue-500 mb-2">{project.type}</div>
+                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                    <p className="opacity-70 mb-4 line-clamp-3">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech.map(tech => (
+                        <span key={tech} className="px-3 py-1 bg-blue-500/20 rounded-full text-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="text-sm opacity-60">{project.period}</div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Timeline */}
+      <section id="experience" className="py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Experience
+            </h2>
+          </ScrollReveal>
+          
+          <div className="space-y-8">
+            {portfolioData.experience.map((exp, index) => (
+              <ScrollReveal key={index} delay={index * 150}>
+                <div className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-102 transition-all duration-500 shadow-lg hover:shadow-2xl`}>
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold mb-2">{exp.title}</h3>
+                      <p className="text-xl text-blue-500 mb-1">{exp.company}</p>
+                      <p className="opacity-60">{exp.location}</p>
+                    </div>
+                    <div className="text-right">
+                      <Briefcase className="w-8 h-8 text-blue-500 mb-2" />
+                      <p className="text-sm opacity-60">{exp.period}</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-2 ml-6">
+                    {exp.tasks.map((task, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="text-blue-500 mr-2">▸</span>
+                        <span className="opacity-80">{task}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          {/* Education */}
+          <ScrollReveal>
+            <div className="mt-16">
+              <h3 className="text-3xl font-bold mb-8 flex items-center">
+                <GraduationCap className="w-8 h-8 mr-3 text-blue-500" />
+                Education
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                {portfolioData.education.map((edu, index) => (
+                  <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+                    <h4 className="text-xl font-bold mb-2">{edu.degree}</h4>
+                    <p className="text-blue-500 mb-1">{edu.institution}</p>
+                    <p className="text-sm opacity-60">{edu.year} • {edu.location}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Certifications */}
+          <ScrollReveal>
+            <div className="mt-12">
+              <h3 className="text-3xl font-bold mb-8 flex items-center">
+                <Award className="w-8 h-8 mr-3 text-blue-500" />
+                Certifications
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                {portfolioData.certifications.map((cert, index) => (
+                  <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:scale-105 transition-transform duration-300`}>
+                    <h4 className="font-bold mb-2">{cert.title}</h4>
+                    <p className="text-sm text-blue-500 mb-1">{cert.issuer}</p>
+                    <p className="text-sm opacity-60">{cert.year}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Get In Touch
+            </h2>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={200}>
+            <div className="text-center mb-12">
+              <p className="text-xl opacity-80 mb-8">
+                Intéressé par une collaboration ? N'hésitez pas à me contacter !
+              </p>
+              <div className="flex justify-center space-x-6">
+                <a
+                  href="mailto:bryanseidy@gmail.com"
+                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+                >
+                  <Mail className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+                >
+                  <Github className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+                >
+                  <Linkedin className="w-6 h-6" />
+                </a>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className={`py-8 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <p className="opacity-60 mb-4 md:mb-0">
+              © 2024 Raphaël ABOMBA. All rights reserved.
+            </p>
+            <a
+              href="#home"
+              className="text-blue-500 hover:text-purple-600 transition-colors duration-300 flex items-center space-x-2"
+            >
+              <span>Back to top</span>
+              <ChevronDown className="w-4 h-4 rotate-180" />
+            </a>
+          </div>
+        </div>
+      </footer>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fade-in 1.2s ease-out;
+        }
+        
+        .animate-slide-up {
+          animation: slide-up 1s ease-out forwards;
+          opacity: 0;
+        }
+        
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .hover\\:scale-102:hover {
+          transform: scale(1.02);
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default Portfolio;
