@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Code, Briefcase, GraduationCap, Award, Moon, Sun, Menu, X } from 'lucide-react';
+import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Code, Briefcase, GraduationCap, Award, Moon, Sun, Menu, X, Download } from 'lucide-react';
 
 // Composant principal du portfolio
 const Portfolio = () => {
@@ -9,19 +9,51 @@ const Portfolio = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      // Calculer la progression du scroll
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (currentScrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
+
+      // Détecter la section active
+      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'contact'];
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fonction pour télécharger le CV
+  const downloadCV = () => {
+    // Créer un lien de téléchargement
+    const link = document.createElement('a');
+    link.href = '/CV_Raphael_ABOMBA.pdf'; // Vous devrez mettre votre CV dans le dossier public
+    link.download = 'CV_Raphael_ABOMBA.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Données du portfolio basées sur le CV
   const portfolioData = {
     hero: {
-      name: "ABOMBA Raphaël",
+      name: "Raphaël ABOMBA",
       title: "Software Engineering Student",
       tagline: "Building the future, one line of code at a time",
       description: "Passionate developer specializing in web development and data science"
@@ -162,47 +194,41 @@ const Portfolio = () => {
     ]
   };
 
-  const ScrollReveal = ({ children, delay = 0 }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => setIsVisible(true), delay);
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-
-      return () => {
-        if (ref.current) {
-          observer.unobserve(ref.current);
-        }
-      };
-    }, [delay]);
-
-    return (
-      <div
-        ref={ref}
-        className={`transition-all duration-1000 ease-out ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
-      >
-        {children}
-      </div>
-    );
-  };
-
   return (
     <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      {/* Barre de progression */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-700 z-[60]">
+        <div 
+          className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Indicateur de section */}
+      <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:flex flex-col space-y-4">
+        {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
+          <a
+            key={section}
+            href={`#${section}`}
+            className="group flex items-center"
+            title={section.charAt(0).toUpperCase() + section.slice(1)}
+          >
+            <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
+              activeSection === section 
+                ? 'bg-blue-500 border-blue-500 scale-125' 
+                : darkMode ? 'border-gray-600 hover:border-blue-400' : 'border-gray-400 hover:border-blue-500'
+            }`} />
+            <span className={`ml-4 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+              activeSection === section ? 'opacity-100 text-blue-500' : ''
+            }`}>
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </span>
+          </a>
+        ))}
+      </div>
+
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrollY > 50 ? (darkMode ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg' : 'bg-white/95 backdrop-blur-lg shadow-lg') : 'bg-transparent'}`}>
+      <nav className={`fixed top-1 w-full z-50 transition-all duration-500 ${scrollY > 50 ? (darkMode ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg' : 'bg-white/95 backdrop-blur-lg shadow-lg') : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
@@ -225,6 +251,14 @@ const Portfolio = () => {
             </div>
 
             <div className="flex items-center space-x-4">
+              <button
+                onClick={downloadCV}
+                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
+              >
+                <Download className="w-4 h-4" />
+                <span>CV</span>
+              </button>
+              
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 rounded-full hover:bg-gray-800 transition-all duration-300"
@@ -256,6 +290,16 @@ const Portfolio = () => {
                   {section}
                 </a>
               ))}
+              <button
+                onClick={() => {
+                  downloadCV();
+                  setMenuOpen(false);
+                }}
+                className="flex items-center space-x-2 w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
+              >
+                <Download className="w-4 h-4" />
+                <span>Télécharger CV</span>
+              </button>
             </div>
           </div>
         )}
@@ -285,13 +329,22 @@ const Portfolio = () => {
                style={{ animationDelay: '0.4s' }}>
               {portfolioData.hero.tagline}
             </p>
-            <a
-              href="#projects"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl animate-slide-up"
-              style={{ animationDelay: '0.6s' }}
-            >
-              See My Work
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up"
+                 style={{ animationDelay: '0.6s' }}>
+              <a
+                href="#projects"
+                className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl"
+              >
+                See My Work
+              </a>
+              <button
+                onClick={downloadCV}
+                className="inline-flex items-center space-x-2 px-8 py-4 border-2 border-blue-500 rounded-full text-lg font-semibold hover:bg-blue-500/10 hover:scale-105 transition-all duration-300"
+              >
+                <Download className="w-5 h-5" />
+                <span>Download CV</span>
+              </button>
+            </div>
           </div>
           
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -303,40 +356,34 @@ const Portfolio = () => {
       {/* About Section */}
       <section id="about" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto px-6">
-          <ScrollReveal>
-            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              About Me
-            </h2>
-          </ScrollReveal>
+          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            About Me
+          </h2>
           
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <ScrollReveal delay={200}>
-              <div className="space-y-6">
-                <p className="text-lg leading-relaxed opacity-90">
-                  {portfolioData.about.bio}
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="w-5 h-5 text-blue-500" />
-                    <span>{portfolioData.about.email}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-2xl">📍</span>
-                    <span>{portfolioData.about.location}</span>
-                  </div>
+            <div className="space-y-6">
+              <p className="text-lg leading-relaxed opacity-90">
+                {portfolioData.about.bio}
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                  <span>{portfolioData.about.email}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">📍</span>
+                  <span>{portfolioData.about.location}</span>
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
             
-            <ScrollReveal delay={400}>
-              <div className="flex justify-center">
-                <div className="w-72 h-72 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 hover:scale-105 transition-transform duration-500">
-                  <div className={`w-full h-full rounded-full ${darkMode ? 'bg-gray-800' : 'bg-white'} flex items-center justify-center text-8xl`}>
-                    👨‍💻
-                  </div>
+            <div className="flex justify-center">
+              <div className="w-72 h-72 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 hover:scale-105 transition-transform duration-500">
+                <div className={`w-full h-full rounded-full ${darkMode ? 'bg-gray-800' : 'bg-white'} flex items-center justify-center text-8xl`}>
+                  👨‍💻
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>
@@ -344,29 +391,25 @@ const Portfolio = () => {
       {/* Skills Section */}
       <section id="skills" className="py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <ScrollReveal>
-            <h2 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Skills & Tools
-            </h2>
-            <p className="text-center text-xl opacity-70 mb-12">I constantly try to improve</p>
-          </ScrollReveal>
+          <h2 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Skills & Tools
+          </h2>
+          <p className="text-center text-xl opacity-70 mb-12">I constantly try to improve</p>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {portfolioData.skills.map((skill, index) => (
-              <ScrollReveal key={skill.name} delay={index * 50}>
-                <div className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}>
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {skill.icon}
-                  </div>
-                  <h3 className="font-semibold mb-3">{skill.name}</h3>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
+              <div key={skill.name} className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}>
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                  {skill.icon}
                 </div>
-              </ScrollReveal>
+                <h3 className="font-semibold mb-3">{skill.name}</h3>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000"
+                    style={{ width: `${skill.level}%` }}
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -375,34 +418,30 @@ const Portfolio = () => {
       {/* Projects Section */}
       <section id="projects" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal>
-            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Featured Projects
-            </h2>
-          </ScrollReveal>
+          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Featured Projects
+          </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {portfolioData.projects.map((project, index) => (
-              <ScrollReveal key={project.title} delay={index * 100}>
-                <div className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl group`}>
-                  <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-500">
-                    {project.image}
-                  </div>
-                  <div className="p-6">
-                    <div className="text-sm text-blue-500 mb-2">{project.type}</div>
-                    <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                    <p className="opacity-70 mb-4 line-clamp-3">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.map(tech => (
-                        <span key={tech} className="px-3 py-1 bg-blue-500/20 rounded-full text-sm">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="text-sm opacity-60">{project.period}</div>
-                  </div>
+              <div key={project.title} className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl group`}>
+                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-500">
+                  {project.image}
                 </div>
-              </ScrollReveal>
+                <div className="p-6">
+                  <div className="text-sm text-blue-500 mb-2">{project.type}</div>
+                  <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
+                  <p className="opacity-70 mb-4 line-clamp-3">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech.map(tech => (
+                      <span key={tech} className="px-3 py-1 bg-blue-500/20 rounded-full text-sm">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="text-sm opacity-60">{project.period}</div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -411,120 +450,108 @@ const Portfolio = () => {
       {/* Experience Timeline */}
       <section id="experience" className="py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <ScrollReveal>
-            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Experience
-            </h2>
-          </ScrollReveal>
+          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Experience
+          </h2>
           
           <div className="space-y-8">
             {portfolioData.experience.map((exp, index) => (
-              <ScrollReveal key={index} delay={index * 150}>
-                <div className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-102 transition-all duration-500 shadow-lg hover:shadow-2xl`}>
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-2">{exp.title}</h3>
-                      <p className="text-xl text-blue-500 mb-1">{exp.company}</p>
-                      <p className="opacity-60">{exp.location}</p>
-                    </div>
-                    <div className="text-right">
-                      <Briefcase className="w-8 h-8 text-blue-500 mb-2" />
-                      <p className="text-sm opacity-60">{exp.period}</p>
-                    </div>
+              <div key={index} className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-102 transition-all duration-500 shadow-lg hover:shadow-2xl`}>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{exp.title}</h3>
+                    <p className="text-xl text-blue-500 mb-1">{exp.company}</p>
+                    <p className="opacity-60">{exp.location}</p>
                   </div>
-                  <ul className="space-y-2 ml-6">
-                    {exp.tasks.map((task, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="text-blue-500 mr-2">▸</span>
-                        <span className="opacity-80">{task}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="text-right">
+                    <Briefcase className="w-8 h-8 text-blue-500 mb-2" />
+                    <p className="text-sm opacity-60">{exp.period}</p>
+                  </div>
                 </div>
-              </ScrollReveal>
+                <ul className="space-y-2 ml-6">
+                  {exp.tasks.map((task, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="text-blue-500 mr-2">▸</span>
+                      <span className="opacity-80">{task}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
 
           {/* Education */}
-          <ScrollReveal>
-            <div className="mt-16">
-              <h3 className="text-3xl font-bold mb-8 flex items-center">
-                <GraduationCap className="w-8 h-8 mr-3 text-blue-500" />
-                Education
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {portfolioData.education.map((edu, index) => (
-                  <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-                    <h4 className="text-xl font-bold mb-2">{edu.degree}</h4>
-                    <p className="text-blue-500 mb-1">{edu.institution}</p>
-                    <p className="text-sm opacity-60">{edu.year} • {edu.location}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="mt-16">
+            <h3 className="text-3xl font-bold mb-8 flex items-center">
+              <GraduationCap className="w-8 h-8 mr-3 text-blue-500" />
+              Education
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              {portfolioData.education.map((edu, index) => (
+                <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
+                  <h4 className="text-xl font-bold mb-2">{edu.degree}</h4>
+                  <p className="text-blue-500 mb-1">{edu.institution}</p>
+                  <p className="text-sm opacity-60">{edu.year} • {edu.location}</p>
+                </div>
+              ))}
             </div>
-          </ScrollReveal>
+          </div>
 
           {/* Certifications */}
-          <ScrollReveal>
-            <div className="mt-12">
-              <h3 className="text-3xl font-bold mb-8 flex items-center">
-                <Award className="w-8 h-8 mr-3 text-blue-500" />
-                Certifications
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                {portfolioData.certifications.map((cert, index) => (
-                  <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:scale-105 transition-transform duration-300`}>
-                    <h4 className="font-bold mb-2">{cert.title}</h4>
-                    <p className="text-sm text-blue-500 mb-1">{cert.issuer}</p>
-                    <p className="text-sm opacity-60">{cert.year}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="mt-12">
+            <h3 className="text-3xl font-bold mb-8 flex items-center">
+              <Award className="w-8 h-8 mr-3 text-blue-500" />
+              Certifications
+            </h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {portfolioData.certifications.map((cert, index) => (
+                <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:scale-105 transition-transform duration-300`}>
+                  <h4 className="font-bold mb-2">{cert.title}</h4>
+                  <p className="text-sm text-blue-500 mb-1">{cert.issuer}</p>
+                  <p className="text-sm opacity-60">{cert.year}</p>
+                </div>
+              ))}
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <div className="max-w-4xl mx-auto px-6">
-          <ScrollReveal>
-            <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Get In Touch
-            </h2>
-          </ScrollReveal>
+          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+            Get In Touch
+          </h2>
           
-          <ScrollReveal delay={200}>
-            <div className="text-center mb-12">
-              <p className="text-xl opacity-80 mb-8">
-                Intéressé par une collaboration ? N'hésitez pas à me contacter !
-              </p>
-              <div className="flex justify-center space-x-6">
-                <a
-                  href="mailto:bryanseidy@gmail.com"
-                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-                >
-                  <Mail className="w-6 h-6" />
-                </a>
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-                >
-                  <Github className="w-6 h-6" />
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-                >
-                  <Linkedin className="w-6 h-6" />
-                </a>
-              </div>
+          <div className="text-center mb-12">
+            <p className="text-xl opacity-80 mb-8">
+              Intéressé par une collaboration ? N'hésitez pas à me contacter !
+            </p>
+            <div className="flex justify-center space-x-6">
+              <a
+                href="mailto:bryanseidy@gmail.com"
+                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+              >
+                <Mail className="w-6 h-6" />
+              </a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+              >
+                <Github className="w-6 h-6" />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
+              >
+                <Linkedin className="w-6 h-6" />
+              </a>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </section>
 
@@ -545,7 +572,6 @@ const Portfolio = () => {
           </div>
         </div>
       </footer>
-
     </div>
   );
 };
