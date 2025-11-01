@@ -548,7 +548,7 @@ const Portfolio = () => {
                 <Mail className="w-6 h-6" />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/BryanSeidy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
@@ -556,7 +556,7 @@ const Portfolio = () => {
                 <Github className="w-6 h-6" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/seidy-bryan-a3b66a2a7/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
