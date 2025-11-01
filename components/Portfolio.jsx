@@ -66,18 +66,18 @@ const Portfolio = () => {
       phone: "+237 659 993 077"
     },
     skills: [
-      { name: "HTML/CSS", level: 90, icon: "🎨" },
-      { name: "JavaScript", level: 85, icon: "⚡" },
-      { name: "TypeScript", level: 80, icon: "💎" },
-      { name: "React.js", level: 85, icon: "⚛️" },
-      { name: "Next.js", level: 80, icon: "🚀" },
-      { name: "Node.js", level: 75, icon: "💚" },
-      { name: "Python", level: 80, icon: "🐍" },
-      { name: "PHP", level: 75, icon: "🐘" },
-      { name: "MongoDB", level: 70, icon: "🍃" },
-      { name: "MySQL", level: 75, icon: "🐬" },
-      { name: "Git", level: 85, icon: "🔧" },
-      { name: "WordPress", level: 70, icon: "📝" }
+      { name: "HTML/CSS", level: 90, icon: "/images/skills/html-css.png" },
+      { name: "JavaScript", level: 85, icon: "/images/skills/javascript.png" },
+      { name: "TypeScript", level: 80, icon: "/images/skills/typescript.png" },
+      { name: "React.js", level: 85, icon: "/images/skills/react.png" },
+      { name: "Next.js", level: 80, icon: "/images/skills/nextjs.png" },
+      { name: "Node.js", level: 75, icon: "/images/skills/nodejs.png" },
+      { name: "Python", level: 80, icon: "/images/skills/python.png" },
+      { name: "PHP", level: 75, icon: "/images/skills/php.svg" },
+      { name: "MongoDB", level: 70, icon: "/images/skills/mongodb.png" },
+      { name: "MySQL", level: 75, icon: "/images/skills/mysql.png" },
+      { name: "Git", level: 85, icon: "/images/skills/git.png" },
+      { name: "WordPress", level: 70, icon: "/images/skills/wordpress.png" }
     ],
     projects: [
       {
