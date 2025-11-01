@@ -53,7 +53,7 @@ const Portfolio = () => {
   // Données du portfolio basées sur le CV
   const portfolioData = {
     hero: {
-      name: "Raphaël ABOMBA",
+      name: "ABOMBA Raphaël",
       title: "Software Engineering Student",
       tagline: "Building the future, one line of code at a time",
       description: "Passionate developer specializing in web development and data science"
@@ -560,7 +560,7 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <p className="opacity-60 mb-4 md:mb-0">
-              © 2024 Raphaël ABOMBA. All rights reserved.
+              © 2024 ABOMBA Raphaël. All rights reserved.
             </p>
             <a
               href="#home"
