@@ -108,7 +108,7 @@ const Portfolio = () => {
         title: "Patrie Art",
         description: "Site web pour l'association culturelle Patrie Art, présentant les événements artistiques et mettant en relation artistes et public.",
         tech: ["HTML", "CSS", "JavaScript", "PHP"],
-        image: "/images/projects/patrie-art.jpg",
+        image: "/images/projects/patrie-art.png",
         period: "Août - Oct 2024",
         type: "Association Website"
       },
@@ -124,7 +124,7 @@ const Portfolio = () => {
         title: "Art Sous Le Manguier",
         description: "Site WordPress pour reportages artistiques avec système de matching automatique d'artistes et suivi de reportages.",
         tech: ["WordPress", "PHP", "MySQL"],
-        image: "/images/projects/art-sous-le-manguier.png",
+        image: "/images/projects/art-sous-le-manguier.jpg",
         period: "Oct 2024",
         type: "Media Platform"
       }
