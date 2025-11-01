@@ -108,7 +108,7 @@ const Portfolio = () => {
         title: "Patrie Art",
         description: "Site web pour l'association culturelle Patrie Art, présentant les événements artistiques et mettant en relation artistes et public.",
         tech: ["HTML", "CSS", "JavaScript", "PHP"],
-        image: "/images/projects/patrie-art.png",
+        image: "/images/projects/patrie-art.jpg",
         period: "Août - Oct 2024",
         type: "Association Website"
       },
