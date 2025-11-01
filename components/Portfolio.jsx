@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Code, Briefcase, GraduationCap, Award, Moon, Sun, Menu, X, Download } from 'lucide-react';
 
 // Composant principal du portfolio
@@ -83,7 +84,7 @@ const Portfolio = () => {
         title: "CIVIKA",
         description: "Première plateforme panafricaine dédiée aux Organisations de la Société Civile (OSC). Elle connecte, outille et valorise les acteurs du changement.",
         tech: ["React", "Node.js", "MongoDB", "Express.js"],
-        image: "🌍",
+        image: "/images/projects/civika.png",
         period: "Août - Sept 2024",
         type: "Web Collaborative App"
       },
@@ -91,7 +92,7 @@ const Portfolio = () => {
         title: "Cinema Scraper",
         description: "Outil d'automatisation pour extraire les horaires de séances de cinéma, avec matching intelligent de films et export CSV. Interface GUI moderne avec thème clair/sombre.",
         tech: ["Python", "Selenium", "Tkinter", "Pandas"],
-        image: "🎬",
+        image: "/images/projects/cinema-scraper.png",
         period: "Sept 2024",
         type: "Automation Tool"
       },
@@ -99,7 +100,7 @@ const Portfolio = () => {
         title: "Sessrail",
         description: "Plateforme de réseau ferroviaire régional avec suivi en temps réel, design responsive et cartes interactives pour la planification d'itinéraires.",
         tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Express.js"],
-        image: "🚄",
+        image: "/images/projects/sessrail.png",
         period: "2024",
         type: "Transportation Platform"
       },
@@ -107,7 +108,7 @@ const Portfolio = () => {
         title: "Patrie Art",
         description: "Site web pour l'association culturelle Patrie Art, présentant les événements artistiques et mettant en relation artistes et public.",
         tech: ["HTML", "CSS", "JavaScript", "PHP"],
-        image: "🎭",
+        image: "/images/projects/patrie-art.png",
         period: "Août - Oct 2024",
         type: "Association Website"
       },
@@ -115,7 +116,7 @@ const Portfolio = () => {
         title: "Builder Brothers",
         description: "Site vitrine pour entreprise de construction avec gestion de projets, implémentation de base de données et système de maintenance.",
         tech: ["React", "Node.js", "MySQL"],
-        image: "🏗️",
+        image: "/images/projects/builder-brothers.png",
         period: "Mai 2024",
         type: "Corporate Website"
       },
@@ -123,7 +124,7 @@ const Portfolio = () => {
         title: "Art Sous Le Manguier",
         description: "Site WordPress pour reportages artistiques avec système de matching automatique d'artistes et suivi de reportages.",
         tech: ["WordPress", "PHP", "MySQL"],
-        image: "🎨",
+        image: "/images/projects/art-sous-le-manguier.png",
         period: "Oct 2024",
         type: "Media Platform"
       }
@@ -399,8 +400,14 @@ const Portfolio = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {portfolioData.skills.map((skill, index) => (
               <div key={skill.name} className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}>
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {skill.icon}
+                <div className="w-16 h-16 mb-3 group-hover:scale-110 transition-transform duration-300 relative flex items-center justify-center">
+                  <Image
+                    src={skill.icon}
+                    alt={skill.name}
+                    width={64}
+                    height={64}
+                    className="object-contain"
+                  />
                 </div>
                 <h3 className="font-semibold mb-3">{skill.name}</h3>
                 <div className="w-full bg-gray-700 rounded-full h-2">
@@ -425,8 +432,14 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {portfolioData.projects.map((project, index) => (
               <div key={project.title} className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl group`}>
-                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-8xl group-hover:scale-110 transition-transform duration-500">
-                  {project.image}
+                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
                 </div>
                 <div className="p-6">
                   <div className="text-sm text-blue-500 mb-2">{project.type}</div>
