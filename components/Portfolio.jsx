@@ -1,591 +1,555 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
-import { Mail, Github, Linkedin, ChevronDown, ExternalLink, Code, Briefcase, GraduationCap, Award, Moon, Sun, Menu, X, Download } from 'lucide-react';
+import {
+  ArrowUpRight,
+  Award,
+  Briefcase,
+  ChevronDown,
+  Download,
+  Github,
+  Globe2,
+  Layers,
+  Linkedin,
+  Mail,
+  Menu,
+  Moon,
+  Network,
+  Phone,
+  Sparkles,
+  Sun,
+  Target,
+  TerminalSquare,
+  Users,
+  X,
+  Zap,
+} from 'lucide-react';
 
-// Composant principal du portfolio
+const navItems = [
+  { id: 'home', label: 'Index' },
+  { id: 'story', label: 'Story' },
+  { id: 'work', label: 'Work' },
+  { id: 'expertise', label: 'Systems' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'timeline', label: 'Timeline' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const analysisHighlights = [
+  'Positioning evolved from software engineering student to product-minded full stack developer and technical project lead.',
+  'Strongest proof: ownership of MIC SARL technical direction, C-CONNECT MVP, WeTell automation, and Patrie Art platform delivery.',
+  'Hidden strength: connecting product thinking, execution discipline, AI automation, infrastructure, and stakeholder communication.',
+  'Business impact signal: faster data workflows, production-ready systems, improved publishing operations, and user-centered platforms.',
+];
+
+const metrics = [
+  { value: '3+', label: 'years building web products' },
+  { value: '45%', label: 'automation rate reported on WeTell workflows' },
+  { value: '1k+', label: 'users reached through Patrie Art' },
+  { value: '4', label: 'flagship systems repositioned as case studies' },
+];
+
+const brandPillars = [
+  {
+    title: 'Product judgement',
+    text: 'I translate ambiguous business needs into clear product decisions, scoped releases, and interfaces people can actually use.',
+    icon: Target,
+  },
+  {
+    title: 'Full-stack execution',
+    text: 'I design, build, deploy, and maintain systems across frontend, backend, databases, APIs, authentication, and CI/CD.',
+    icon: Layers,
+  },
+  {
+    title: 'Automation leverage',
+    text: 'I use scraping, data processing, AI APIs, and agent workflows to remove repetitive work and accelerate operations.',
+    icon: Zap,
+  },
+  {
+    title: 'Technical leadership',
+    text: 'I coordinate contributors, establish standards, review implementation choices, and keep projects moving toward measurable outcomes.',
+    icon: Users,
+  },
+];
+
+const caseStudies = [
+  {
+    name: 'MIC SARL',
+    label: 'Technical Department Leadership',
+    period: '2025—2026',
+    image: '/images/projects/civika.png',
+    summary:
+      'A multi-service technical department rebuilt around product delivery, internship operations, internal standards, and payment integrations.',
+    problem:
+      'The organization needed reliable technical coordination across several product initiatives while maintaining speed, clarity, and implementation quality.',
+    context:
+      'Raphaël operated as Responsable du Département Technique & Full Stack Developer, coordinating digital projects and supervising trainees.',
+    architecture:
+      'Next.js, TypeScript, React, Laravel, MySQL, Tailwind CSS, Docker, GitHub, APIs, Mobile Money integrations, and agent-based workflows.',
+    decisions: [
+      'Created reusable development standards to align delivery across contributors.',
+      'Combined e-learning, e-commerce, real estate, and service modules into a coherent multi-SaaS platform direction.',
+      'Integrated Mobile Money payment services and explored AI agents for operational automation.',
+    ],
+    results: ['Clearer project governance', 'Stronger delivery consistency', 'Reusable technical foundations'],
+    impact: 'Raised the technical maturity of the organization while creating conditions for faster product releases.',
+  },
+  {
+    name: 'C-CONNECT',
+    label: 'Pan-African Collaboration Platform',
+    period: '2025—Present',
+    image: '/images/projects/civika.png',
+    summary:
+      'A collaborative MVP designed to connect civil society organizations, partners, roles, and secure operational workflows.',
+    problem:
+      'Civil society actors needed a structured digital space to collaborate, manage users, and create trusted connections beyond informal channels.',
+    context:
+      'Founder and developer role covering product conception, architecture, implementation, authentication, security, and production readiness.',
+    architecture: 'Next.js, Node.js, TypeScript, Tailwind CSS, PostgreSQL, Docker, GitHub, CI/CD.',
+    decisions: [
+      'Built the MVP around roles, permissions, and secure authentication rather than cosmetic pages.',
+      'Prioritized scalable full-stack architecture before public launch.',
+      'Designed the product as a pan-African collaboration layer, not a simple directory.',
+    ],
+    results: ['Operational MVP', 'Scalable architecture', 'Security-first user foundation'],
+    impact: 'Created a launchable product foundation for a regional ecosystem platform.',
+  },
+  {
+    name: 'WeTell Africa',
+    label: 'Scraping & Data Normalization Tool',
+    period: '2025',
+    image: '/images/projects/cinema-scraper.png',
+    summary:
+      'A Python automation system that turns fragmented online information into structured, usable decision data.',
+    problem:
+      'Teams were spending too much time collecting, cleaning, and organizing information from multiple sources.',
+    context:
+      'Raphaël designed an internal scraping and normalization tool to reduce repetitive processing and improve strategic visibility.',
+    architecture: 'Python, data processing pipelines, automation scripts, API deployment patterns, and structured datasets.',
+    decisions: [
+      'Focused the tool on normalization quality instead of raw extraction volume.',
+      'Automated repetitive collection tasks to free the team from low-value manual work.',
+      'Structured outputs for analysis, reporting, and decision support.',
+    ],
+    results: ['45% automation rate', 'Reduced repetitive processing', 'Cleaner strategic datasets'],
+    impact: 'Converted manual operational work into a repeatable data workflow that supports faster decisions.',
+  },
+  {
+    name: 'Patrie Art',
+    label: 'Institutional Cultural Platform',
+    period: '2024',
+    image: '/images/projects/patrie-art.png',
+    summary:
+      'A complete web platform for a cultural association, focused on visibility, maintenance, and public access to artistic initiatives.',
+    problem:
+      'The association needed a credible digital presence to present its mission, events, and artists to a broader audience.',
+    context:
+      'Raphaël led conception, implementation, online deployment, maintenance, and continuous improvement of the platform.',
+    architecture: 'PHP, JavaScript, HTML, CSS, MySQL, content structure, hosting, and maintenance workflows.',
+    decisions: [
+      'Designed the platform around institutional clarity rather than decorative complexity.',
+      'Optimized UX, performance, and content hierarchy for public comprehension.',
+      'Built a maintainable structure that could evolve with the association.',
+    ],
+    results: ['Platform deployed online', 'More than 1,000 users reached', 'Improved cultural visibility'],
+    impact: 'Gave Patrie Art a credible digital home and expanded access to its cultural work.',
+  },
+];
+
+const expertise = [
+  {
+    title: 'Frontend systems',
+    tools: 'Next.js, React, Vue.js, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS',
+    note: 'Interfaces with editorial rhythm, responsive precision, and product-level usability.',
+  },
+  {
+    title: 'Backend & APIs',
+    tools: 'Laravel, Node.js, Next.js, PHP, Python, Java, API REST',
+    note: 'Secure service layers, business logic, integrations, and maintainable code foundations.',
+  },
+  {
+    title: 'Data & infrastructure',
+    tools: 'MySQL, PostgreSQL, SQLite, Docker, Linux, GitHub, CI/CD, Nginx, Postman',
+    note: 'Data models, deployment pipelines, environments, and operational reliability.',
+  },
+  {
+    title: 'AI & automation',
+    tools: 'OpenAI API, Gemini API, agents, scraping, data processing, prompt engineering',
+    note: 'Automation systems that reduce workload and unlock faster business decisions.',
+  },
+];
+
+const timeline = [
+  {
+    period: '2025—2026',
+    title: 'Responsable du Département Technique & Full Stack Developer',
+    org: 'MIC SARL',
+    text: 'Leading technical project direction, development coordination, trainee supervision, Mobile Money integration, and AI automation initiatives.',
+  },
+  {
+    period: '2025—Present',
+    title: 'Founder & Developer',
+    org: 'C-CONNECT',
+    text: 'Conceiving and building a secure pan-African collaborative platform with scalable full-stack architecture.',
+  },
+  {
+    period: '2025',
+    title: 'Web & Automation Developer',
+    org: 'WeTell Africa Group',
+    text: 'Built scraping and normalization tooling that automated 45% of repetitive data-processing workflows.',
+  },
+  {
+    period: '2024',
+    title: 'Web Developer',
+    org: 'Patrie Art',
+    text: 'Delivered and maintained an institutional website that reached more than 1,000 users.',
+  },
+  {
+    period: '2024—Present',
+    title: 'Licence in Software Engineering',
+    org: 'Institut Universitaire de Technologie de Douala',
+    text: 'Continuing formal engineering training while building production products and leading technical execution.',
+  },
+];
+
+const deliverables = [
+  'Sitemap: Index, Story, Selected Work, Case Studies, Expertise, Leadership & Impact, Timeline, Contact.',
+  'Core message: product-minded full stack developer who turns business ideas into shipped systems.',
+  'Tagline: Engineering useful products, automations, and platforms with product discipline.',
+  'Elevator pitch: Raphaël helps teams transform ideas, data, and operational pain points into reliable web platforms and automated workflows.',
+  'Design system: dark editorial canvas, large typography, asymmetric grids, restrained blue accent, glass panels, soft gradients, and cinematic scroll pacing.',
+  'Conversion path: read positioning, trust the proof, inspect case studies, understand technical depth, then start a focused conversation.',
+];
+
 const Portfolio = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [activeSection, setActiveSection] = useState('home');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  const sections = useMemo(() => navItems.map((item) => item.id), []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-      
-      // Calculer la progression du scroll
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (currentScrollY / windowHeight) * 100;
-      setScrollProgress(scrolled);
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
 
-      // Détecter la section active
-      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'contact'];
-      for (const section of sections) {
+      const current = sections.find((section) => {
         const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+        if (!element) return false;
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 150 && rect.bottom >= 150;
+      });
 
-  // Fonction pour télécharger le CV
+      if (current) setActiveSection(current);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [sections]);
+
   const downloadCV = () => {
-    // Créer un lien de téléchargement
     const link = document.createElement('a');
-    link.href = '/CV_Raphael_ABOMBA.pdf'; // Vous devrez mettre votre CV dans le dossier public
+    link.href = '/CV_Raphael_ABOMBA.pdf';
     link.download = 'CV_Raphael_ABOMBA.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  // Données du portfolio basées sur le CV
-  const portfolioData = {
-    hero: {
-      name: "ABOMBA Raphaël",
-      title: "Software Engineering Student",
-      tagline: "Building the future, one line of code at a time",
-      description: "Passionate developer specializing in web development and data science"
-    },
-    about: {
-      bio: "Dynamique, motivé avec un esprit analytique et d'équipe. Je souhaite apporter ma pierre à l'édifice dans le domaine du Développement et de la Data Science. Actuellement à la recherche d'une opportunité de stage pour mettre en pratique mes compétences tout en acquérant de nouvelles expériences professionnelles.",
-      location: "Douala, Cameroon",
-      email: "bryanseidy@gmail.com",
-      phone: "+237 659 993 077"
-    },
-    skills: [
-      { name: "HTML/CSS", level: 90, icon: "/images/skills/html-css.png" },
-      { name: "JavaScript", level: 85, icon: "/images/skills/javascript.png" },
-      { name: "TypeScript", level: 80, icon: "/images/skills/typescript.png" },
-      { name: "React.js", level: 85, icon: "/images/skills/react.png" },
-      { name: "Next.js", level: 80, icon: "/images/skills/nextjs.png" },
-      { name: "Node.js", level: 75, icon: "/images/skills/nodejs.png" },
-      { name: "Python", level: 80, icon: "/images/skills/python.png" },
-      { name: "PHP", level: 75, icon: "/images/skills/php.svg" },
-      { name: "MongoDB", level: 70, icon: "/images/skills/mongodb.png" },
-      { name: "MySQL", level: 75, icon: "/images/skills/mysql.png" },
-      { name: "Git", level: 85, icon: "/images/skills/git.png" },
-      { name: "WordPress", level: 70, icon: "/images/skills/wordpress.png" }
-    ],
-    projects: [
-      {
-        title: "CIVIKA",
-        description: "Première plateforme panafricaine dédiée aux Organisations de la Société Civile (OSC). Elle connecte, outille et valorise les acteurs du changement.",
-        tech: ["React", "Node.js", "MongoDB", "Express.js"],
-        image: "/images/projects/civika.png",
-        period: "Août - Sept 2024",
-        type: "Web Collaborative App"
-      },
-      {
-        title: "Cinema Scraper",
-        description: "Outil d'automatisation pour extraire les horaires de séances de cinéma, avec matching intelligent de films et export CSV. Interface GUI moderne avec thème clair/sombre.",
-        tech: ["Python", "Selenium", "Tkinter", "Pandas"],
-        image: "/images/projects/cinema-scraper.png",
-        period: "Sept 2024",
-        type: "Automation Tool"
-      },
-      {
-        title: "Sessrail",
-        description: "Plateforme de réseau ferroviaire régional avec suivi en temps réel, design responsive et cartes interactives pour la planification d'itinéraires.",
-        tech: ["React.js", "Tailwind CSS", "Node.js", "MongoDB", "Express.js"],
-        image: "/images/projects/sessrail.png",
-        period: "2024",
-        type: "Transportation Platform"
-      },
-      {
-        title: "Patrie Art",
-        description: "Site web pour l'association culturelle Patrie Art, présentant les événements artistiques et mettant en relation artistes et public.",
-        tech: ["HTML", "CSS", "JavaScript", "PHP"],
-        image: "/images/projects/patrie-art.png",
-        period: "Août - Oct 2024",
-        type: "Association Website"
-      },
-      {
-        title: "Builder Brothers",
-        description: "Site vitrine pour entreprise de construction avec gestion de projets, implémentation de base de données et système de maintenance.",
-        tech: ["React", "Node.js", "MySQL"],
-        image: "/images/projects/builder-brothers.png",
-        period: "Mai 2024",
-        type: "Corporate Website"
-      },
-      {
-        title: "Art Sous Le Manguier",
-        description: "Site WordPress pour reportages artistiques avec système de matching automatique d'artistes et suivi de reportages.",
-        tech: ["WordPress", "PHP", "MySQL"],
-        image: "/images/projects/art-sous-le-manguier.jpg",
-        period: "Oct 2024",
-        type: "Media Platform"
-      }
-    ],
-    experience: [
-      {
-        title: "Software Engineering Intern",
-        company: "WE TELL Africa Group",
-        period: "Juillet - Sept 2024",
-        location: "Douala",
-        tasks: [
-          "Conception et réalisation d'une application de smart gestion des stages",
-          "Manipulation du langage C et conception d'une application de gestion d'étudiants",
-          "Manipulation du langage Python et conception d'une application de gestion de mots de passes"
-        ]
-      },
-      {
-        title: "Software Engineering Intern",
-        company: "Patrie Art",
-        period: "Août - Oct 2024",
-        location: "Douala",
-        tasks: [
-          "Conception et implémentation du site web de l'association Patrie Art"
-        ]
-      },
-      {
-        title: "IT Maintenance Intern",
-        company: "SECEL",
-        period: "Juin - Août 2022",
-        location: "Douala",
-        tasks: [
-          "Identification des ressources nécessaires à la résolution d'un dysfonctionnement",
-          "Installation, entretien et dépannage des équipements informatiques",
-          "Réalisation d'un câblage réseau de matériels informatiques"
-        ]
-      }
-    ],
-    education: [
-      {
-        degree: "BTS en Génie Logiciel",
-        institution: "Institut Universitaire du Golfe de Guinée (IUGG ISTA)",
-        year: "2024",
-        location: "Douala"
-      },
-      {
-        degree: "Baccalauréat série D",
-        institution: "Lycée Général Leclerc",
-        year: "2022",
-        location: "Yaoundé"
-      }
-    ],
-    certifications: [
-      {
-        title: "Attestation Sécurité Informatique",
-        issuer: "ALISON USA",
-        year: "2024"
-      },
-      {
-        title: "Attestation en Programmation Web",
-        issuer: "IME Douala",
-        year: "2022"
-      },
-      {
-        title: "Attestation Réseau Informatique",
-        issuer: "ISTIA Yaoundé",
-        year: "2022"
-      }
-    ]
-  };
-
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Barre de progression */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-700 z-[60]">
-        <div 
-          className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
+    <main className={darkMode ? 'portfolio-shell dark' : 'portfolio-shell light'}>
+      <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
+      <div className="grain" aria-hidden="true" />
+      <div className="orb orb-one" aria-hidden="true" />
+      <div className="orb orb-two" aria-hidden="true" />
 
-      {/* Indicateur de section */}
-      <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:flex flex-col space-y-4">
-        {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-          <a
-            key={section}
-            href={`#${section}`}
-            className="group flex items-center"
-            title={section.charAt(0).toUpperCase() + section.slice(1)}
-          >
-            <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-              activeSection === section 
-                ? 'bg-blue-500 border-blue-500 scale-125' 
-                : darkMode ? 'border-gray-600 hover:border-blue-400' : 'border-gray-400 hover:border-blue-500'
-            }`} />
-            <span className={`ml-4 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-              activeSection === section ? 'opacity-100 text-blue-500' : ''
-            }`}>
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </span>
-          </a>
-        ))}
-      </div>
+      <nav className="navigation" aria-label="Primary navigation">
+        <a href="#home" className="brand-mark" aria-label="ABOMBA Raphaël home">
+          <span>AR</span>
+        </a>
 
-      {/* Navigation */}
-      <nav className={`fixed top-1 w-full z-50 transition-all duration-500 ${scrollY > 50 ? (darkMode ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg' : 'bg-white/95 backdrop-blur-lg shadow-lg') : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              RA
-            </div>
-            
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-                <a
-                  key={section}
-                  href={`#${section}`}
-                  className={`capitalize transition-all duration-300 hover:text-blue-500 ${
-                    activeSection === section ? 'text-blue-500' : ''
-                  }`}
-                >
-                  {section}
-                </a>
-              ))}
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={downloadCV}
-                className="hidden md:flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                <Download className="w-4 h-4" />
-                <span>CV</span>
-              </button>
-              
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-full hover:bg-gray-800 transition-all duration-300"
-              >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-              
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="md:hidden p-2"
-              >
-                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
+        <div className="nav-links" aria-label="Portfolio sections">
+          {navItems.map((item) => (
+            <a key={item.id} href={`#${item.id}`} className={activeSection === item.id ? 'active' : ''}>
+              {item.label}
+            </a>
+          ))}
         </div>
 
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className={`md:hidden ${darkMode ? 'bg-gray-800' : 'bg-white'} border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-            <div className="px-6 py-4 space-y-3">
-              {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-                <a
-                  key={section}
-                  href={`#${section}`}
-                  onClick={() => setMenuOpen(false)}
-                  className="block capitalize py-2 hover:text-blue-500 transition-colors"
-                >
-                  {section}
-                </a>
-              ))}
-              <button
-                onClick={() => {
-                  downloadCV();
-                  setMenuOpen(false);
-                }}
-                className="flex items-center space-x-2 w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                <Download className="w-4 h-4" />
-                <span>Télécharger CV</span>
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="nav-actions">
+          <button type="button" className="icon-button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle color mode">
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button type="button" className="nav-cta" onClick={downloadCV}>
+            <Download size={16} /> CV
+          </button>
+          <button type="button" className="mobile-toggle" onClick={() => setMenuOpen((value) => !value)} aria-label="Toggle menu">
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"
-               style={{ top: '20%', left: '10%', animationDuration: '4s' }} />
-          <div className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
-               style={{ bottom: '20%', right: '10%', animationDuration: '6s', animationDelay: '2s' }} />
+      {menuOpen && (
+        <div className="mobile-menu">
+          {navItems.map((item) => (
+            <a key={item.id} href={`#${item.id}`} onClick={() => setMenuOpen(false)}>
+              {item.label}
+            </a>
+          ))}
         </div>
+      )}
 
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto"
-             style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
-          <div className="space-y-6 animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold mb-4 animate-slide-up">
-              {portfolioData.hero.name}
-            </h1>
-            <p className="text-2xl md:text-3xl text-blue-400 mb-6 animate-slide-up"
-               style={{ animationDelay: '0.2s' }}>
-              {portfolioData.hero.title}
+      <section id="home" className="hero section-shell">
+        <div className="hero-kicker reveal">Product-Minded Full Stack Developer · Technical Project Lead · AI & Automation Builder</div>
+        <div className="hero-grid">
+          <div className="hero-copy reveal">
+            <p className="eyebrow">Douala, Cameroon · Available for product teams, SaaS builds, and automation work</p>
+            <h1>Engineering useful products from strategy to shipped systems.</h1>
+            <p className="hero-lede">
+              I help organizations transform business ideas, operational bottlenecks, and data-heavy workflows into elegant web platforms,
+              secure architectures, and automation systems that create measurable value.
             </p>
-            <p className="text-xl md:text-2xl mb-8 opacity-80 animate-slide-up"
-               style={{ animationDelay: '0.4s' }}>
-              {portfolioData.hero.tagline}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up"
-                 style={{ animationDelay: '0.6s' }}>
-              <a
-                href="#projects"
-                className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl"
-              >
-                See My Work
+            <div className="hero-actions">
+              <a href="#work" className="primary-button">
+                View selected work <ArrowUpRight size={18} />
               </a>
-              <button
-                onClick={downloadCV}
-                className="inline-flex items-center space-x-2 px-8 py-4 border-2 border-blue-500 rounded-full text-lg font-semibold hover:bg-blue-500/10 hover:scale-105 transition-all duration-300"
-              >
-                <Download className="w-5 h-5" />
-                <span>Download CV</span>
-              </button>
+              <a href="mailto:assomabomba@gmail.com" className="secondary-button">
+                Start a conversation
+              </a>
             </div>
           </div>
-          
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <ChevronDown className="w-8 h-8 opacity-50" />
-          </div>
+
+          <aside className="hero-card reveal delay-1" aria-label="Professional snapshot">
+            <div className="availability"><span /> Open to CDI, freelance, remote and international work</div>
+            <h2>ABOMBA Raphaël</h2>
+            <p>Product-minded builder with full-stack depth, leadership range, and a bias for systems that move businesses forward.</p>
+            <div className="signature-grid">
+              <span>Next.js</span><span>Laravel</span><span>TypeScript</span><span>AI APIs</span><span>Docker</span><span>Automation</span>
+            </div>
+          </aside>
         </div>
+
+        <div className="metric-strip reveal delay-2">
+          {metrics.map((metric) => (
+            <div key={metric.label}>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <a href="#story" className="scroll-cue" aria-label="Scroll to story">
+          Scroll <ChevronDown size={18} />
+        </a>
       </section>
 
-      {/* About Section */}
-      <section id="about" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            About Me
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <p className="text-lg leading-relaxed opacity-90">
-                {portfolioData.about.bio}
-              </p>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-blue-500" />
-                  <span>{portfolioData.about.email}</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl">📍</span>
-                  <span>{portfolioData.about.location}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-center">
-              <div className="w-72 h-72 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 hover:scale-105 transition-transform duration-500">
-                <div className={`w-full h-full rounded-full ${darkMode ? 'bg-gray-800' : 'bg-white'} flex items-center justify-center text-8xl`}>
-                  👨‍💻
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-5xl font-bold mb-4 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Skills & Tools
-          </h2>
-          <p className="text-center text-xl opacity-70 mb-12">I constantly try to improve</p>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {portfolioData.skills.map((skill, index) => (
-              <div key={skill.name} className={`p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl group`}>
-                <div className="w-16 h-16 mb-3 group-hover:scale-110 transition-transform duration-300 relative flex items-center justify-center">
-                  <Image
-                    src={skill.icon}
-                    alt={skill.name}
-                    width={64}
-                    height={64}
-                    className="object-contain"
-                  />
-                </div>
-                <h3 className="font-semibold mb-3">{skill.name}</h3>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000"
-                    style={{ width: `${skill.level}%` }}
-                  />
-                </div>
-              </div>
+      <section id="story" className="section-shell split-section">
+        <div className="section-label">01 · Strategy synthesis</div>
+        <div className="section-copy">
+          <p className="eyebrow">From CV analysis to sharper positioning</p>
+          <h2>Not a student portfolio. A builder narrative with leadership proof.</h2>
+          <p>
+            The old CV presented skills as a list. The new CV reveals a stronger story: Raphaël is already operating across product thinking,
+            project coordination, full-stack implementation, data automation, stakeholder support, and production maintenance.
+          </p>
+          <div className="analysis-grid">
+            {analysisHighlights.map((item) => (
+              <article key={item}>
+                <Sparkles size={18} />
+                <p>{item}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {portfolioData.projects.map((project, index) => (
-              <div key={project.title} className={`rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-900' : 'bg-gray-50'} hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl group`}>
-                <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="text-sm text-blue-500 mb-2">{project.type}</div>
-                  <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
-                  <p className="opacity-70 mb-4 line-clamp-3">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map(tech => (
-                      <span key={tech} className="px-3 py-1 bg-blue-500/20 rounded-full text-sm">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="text-sm opacity-60">{project.period}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="section-shell brand-section">
+        <div className="section-label">02 · Personal brand</div>
+        <div className="brand-statement">
+          <p className="eyebrow">Core message</p>
+          <h2>Product discipline, engineering depth, and automation leverage — combined in one builder.</h2>
+          <p>
+            My value is not only writing code. It is understanding why a product should exist, shaping how it should work, building the
+            technical foundation, and improving the operational system around it.
+          </p>
+        </div>
+        <div className="pillar-grid">
+          {brandPillars.map(({ title, text, icon: Icon }) => (
+            <article className="pillar-card" key={title}>
+              <Icon size={22} />
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      {/* Experience Timeline */}
-      <section id="experience" className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Experience
-          </h2>
-          
-          <div className="space-y-8">
-            {portfolioData.experience.map((exp, index) => (
-              <div key={index} className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} hover:scale-102 transition-all duration-500 shadow-lg hover:shadow-2xl`}>
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold mb-2">{exp.title}</h3>
-                    <p className="text-xl text-blue-500 mb-1">{exp.company}</p>
-                    <p className="opacity-60">{exp.location}</p>
-                  </div>
-                  <div className="text-right">
-                    <Briefcase className="w-8 h-8 text-blue-500 mb-2" />
-                    <p className="text-sm opacity-60">{exp.period}</p>
-                  </div>
-                </div>
-                <ul className="space-y-2 ml-6">
-                  {exp.tasks.map((task, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className="text-blue-500 mr-2">▸</span>
-                      <span className="opacity-80">{task}</span>
-                    </li>
-                  ))}
+      <section id="work" className="section-shell work-section">
+        <div className="section-heading">
+          <div>
+            <span className="section-label">03 · Selected work</span>
+            <h2>Four systems. Four types of value.</h2>
+          </div>
+          <p>
+            Each project is framed as a business problem, a product decision, and a technical system — because serious portfolios should show
+            judgement, not just screenshots.
+          </p>
+        </div>
+
+        <div className="case-grid">
+          {caseStudies.map((project, index) => (
+            <article className="case-card" key={project.name}>
+              <div className="case-image">
+                <Image src={project.image} alt={`${project.name} project visual`} fill sizes="(max-width: 900px) 100vw, 50vw" />
+              </div>
+              <div className="case-content">
+                <div className="case-meta"><span>{String(index + 1).padStart(2, '0')}</span>{project.period}</div>
+                <h3>{project.name}</h3>
+                <p className="case-label">{project.label}</p>
+                <p>{project.summary}</p>
+                <a href={`#case-${index}`}>
+                  Read case study <ArrowUpRight size={16} />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-shell case-study-section" aria-label="Detailed case studies">
+        {caseStudies.map((project, index) => (
+          <article id={`case-${index}`} className="case-study" key={project.name}>
+            <div className="case-study-intro">
+              <span className="section-label">Case study · {String(index + 1).padStart(2, '0')}</span>
+              <h2>{project.name}</h2>
+              <p>{project.summary}</p>
+            </div>
+            <div className="case-study-grid">
+              <div>
+                <h3>Problem</h3>
+                <p>{project.problem}</p>
+              </div>
+              <div>
+                <h3>Context</h3>
+                <p>{project.context}</p>
+              </div>
+              <div className="wide">
+                <h3>Architecture</h3>
+                <p>{project.architecture}</p>
+              </div>
+              <div className="wide">
+                <h3>Technical decisions</h3>
+                <ul>
+                  {project.decisions.map((decision) => <li key={decision}>{decision}</li>)}
                 </ul>
               </div>
-            ))}
-          </div>
-
-          {/* Education */}
-          <div className="mt-16">
-            <h3 className="text-3xl font-bold mb-8 flex items-center">
-              <GraduationCap className="w-8 h-8 mr-3 text-blue-500" />
-              Education
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {portfolioData.education.map((edu, index) => (
-                <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-                  <h4 className="text-xl font-bold mb-2">{edu.degree}</h4>
-                  <p className="text-blue-500 mb-1">{edu.institution}</p>
-                  <p className="text-sm opacity-60">{edu.year} • {edu.location}</p>
-                </div>
-              ))}
+              <div>
+                <h3>Results</h3>
+                <ul>
+                  {project.results.map((result) => <li key={result}>{result}</li>)}
+                </ul>
+              </div>
+              <div>
+                <h3>Business impact</h3>
+                <p>{project.impact}</p>
+              </div>
             </div>
-          </div>
+          </article>
+        ))}
+      </section>
 
-          {/* Certifications */}
-          <div className="mt-12">
-            <h3 className="text-3xl font-bold mb-8 flex items-center">
-              <Award className="w-8 h-8 mr-3 text-blue-500" />
-              Certifications
-            </h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {portfolioData.certifications.map((cert, index) => (
-                <div key={index} className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:scale-105 transition-transform duration-300`}>
-                  <h4 className="font-bold mb-2">{cert.title}</h4>
-                  <p className="text-sm text-blue-500 mb-1">{cert.issuer}</p>
-                  <p className="text-sm opacity-60">{cert.year}</p>
-                </div>
-              ))}
-            </div>
+      <section id="expertise" className="section-shell expertise-section">
+        <div className="section-heading">
+          <div>
+            <span className="section-label">04 · Technical expertise</span>
+            <h2>A stack organized around outcomes.</h2>
           </div>
+          <p>
+            The portfolio intentionally avoids percentage bars. Expertise is shown as product capability: interfaces, services, data,
+            infrastructure, and automation.
+          </p>
+        </div>
+        <div className="expertise-grid">
+          {expertise.map((item) => (
+            <article className="expertise-card" key={item.title}>
+              <TerminalSquare size={22} />
+              <h3>{item.title}</h3>
+              <p>{item.note}</p>
+              <span>{item.tools}</span>
+            </article>
+          ))}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Get In Touch
-          </h2>
-          
-          <div className="text-center mb-12">
-            <p className="text-xl opacity-80 mb-8">
-              Intéressé par une collaboration ? N'hésitez pas à me contacter !
-            </p>
-            <div className="flex justify-center space-x-6">
-              <a
-                href="mailto:bryanseidy@gmail.com"
-                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-              >
-                <Mail className="w-6 h-6" />
-              </a>
-              <a
-                href="https://github.com/BryanSeidy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-              >
-                <Github className="w-6 h-6" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/seidy-bryan-a3b66a2a7/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:scale-110 transition-all duration-300 shadow-lg"
-              >
-                <Linkedin className="w-6 h-6" />
-              </a>
-            </div>
-          </div>
+      <section id="impact" className="section-shell impact-section">
+        <div className="impact-copy">
+          <span className="section-label">05 · Leadership & impact</span>
+          <h2>Built for teams that need momentum, clarity, and technical ownership.</h2>
+          <p>
+            I bring structure to execution: clarifying priorities, coordinating contributors, documenting standards, choosing pragmatic
+            architectures, and using automation where it creates real leverage.
+          </p>
+        </div>
+        <div className="impact-list">
+          <article><Briefcase size={20} /><span>Technical project coordination and delivery standards</span></article>
+          <article><Network size={20} /><span>Secure roles, authentication, integrations, and CI/CD foundations</span></article>
+          <article><Award size={20} /><span>Certifications in project management, security, web programming, and networks</span></article>
+          <article><Globe2 size={20} /><span>French fluent, professional English, internationally oriented availability</span></article>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={`py-8 ${darkMode ? 'bg-gray-900' : 'bg-gray-100'} border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <p className="opacity-60 mb-4 md:mb-0">
-              © 2024 ABOMBA Raphaël. All rights reserved.
-            </p>
-            <a
-              href="#home"
-              className="text-blue-500 hover:text-purple-600 transition-colors duration-300 flex items-center space-x-2"
-            >
-              <span>Back to top</span>
-              <ChevronDown className="w-4 h-4 rotate-180" />
-            </a>
-          </div>
+      <section id="timeline" className="section-shell timeline-section">
+        <span className="section-label">06 · Experience timeline</span>
+        <h2>Progression through increasingly larger systems.</h2>
+        <div className="timeline">
+          {timeline.map((item) => (
+            <article className="timeline-item" key={`${item.period}-${item.org}`}>
+              <time>{item.period}</time>
+              <div>
+                <h3>{item.title}</h3>
+                <p className="timeline-org">{item.org}</p>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
         </div>
+      </section>
+
+      <section className="section-shell blueprint-section">
+        <span className="section-label">07 · UX, design system & conversion strategy</span>
+        <h2>The final portfolio is designed as a cinematic product story.</h2>
+        <div className="blueprint-grid">
+          {deliverables.map((item) => (
+            <article key={item}>{item}</article>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" className="section-shell contact-section">
+        <p className="eyebrow">Let’s build the next useful system</p>
+        <h2>Have a product idea, automation workflow, or technical project that needs ownership?</h2>
+        <p>
+          I am available for product development, technical leadership, SaaS MVPs, AI/API integrations, and automation systems.
+        </p>
+        <div className="contact-actions">
+          <a href="mailto:assomabomba@gmail.com" className="primary-button"><Mail size={18} /> assomabomba@gmail.com</a>
+          <a href="tel:+237654746532" className="secondary-button"><Phone size={18} /> +237 654 746 532</a>
+        </div>
+        <div className="social-row">
+          <a href="https://github.com/BryanSeidy" target="_blank" rel="noopener noreferrer"><Github size={18} /> GitHub</a>
+          <a href="https://www.linkedin.com/in/seidy-bryan" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /> LinkedIn</a>
+          <a href="https://bryanseidy-portofolio.vercel.app" target="_blank" rel="noopener noreferrer"><Globe2 size={18} /> Portfolio</a>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <span>© 2026 ABOMBA Raphaël</span>
+        <a href="#home">Back to top ↑</a>
       </footer>
-    </div>
+    </main>
   );
 };
 
