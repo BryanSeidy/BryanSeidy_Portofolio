@@ -20,10 +20,13 @@ const structuredData = {
     'Technical Project Leadership',
     'SaaS Platforms',
     'AI Automation',
+    'Mobile Money Integrations',
     'Next.js',
     'Laravel',
+    'Vue.js',
     'TypeScript',
     'Python',
+    'Claude API',
   ],
 };
 

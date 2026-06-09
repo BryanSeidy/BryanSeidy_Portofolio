@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import {
+  ArrowDownToLine,
   ArrowUpRight,
   Award,
   Briefcase,
@@ -47,7 +48,7 @@ const metrics = [
   { value: '3+', label: 'years building web products' },
   { value: '45%', label: 'automation rate reported on WeTell workflows' },
   { value: '1k+', label: 'users reached through Patrie Art' },
-  { value: '4', label: 'flagship systems repositioned as case studies' },
+  { value: '4', label: 'flagship systems presented as case studies' },
 ];
 
 const brandPillars = [
@@ -170,12 +171,12 @@ const expertise = [
   },
   {
     title: 'Data & infrastructure',
-    tools: 'MySQL, PostgreSQL, SQLite, Docker, Linux, GitHub, CI/CD, Nginx, Postman',
+    tools: 'MySQL, PostgreSQL, SQLite, Docker, Linux, GitHub, CI/CD, Nginx, Postman, Office 365',
     note: 'Data models, deployment pipelines, environments, and operational reliability.',
   },
   {
     title: 'AI & automation',
-    tools: 'OpenAI API, Gemini API, agents, scraping, data processing, prompt engineering',
+    tools: 'OpenAI API, Gemini API, Claude API, AI agents, scraping, data processing, prompt engineering, automation',
     note: 'Automation systems that reduce workload and unlock faster business decisions.',
   },
 ];
@@ -206,10 +207,22 @@ const timeline = [
     text: 'Delivered and maintained an institutional website that reached more than 1,000 users.',
   },
   {
-    period: '2024—Present',
-    title: 'Licence in Software Engineering',
-    org: 'Institut Universitaire de Technologie de Douala',
+    period: '2025—Present',
+    title: "Bachelor's in Software Engineering",
+    org: 'University Institute of Technology of Douala',
     text: 'Continuing formal engineering training while building production products and leading technical execution.',
+  },
+  {
+    period: '2024',
+    title: 'HND in Software Engineering',
+    org: 'University Institute of the Gulf of Guinea',
+    text: 'Validated software engineering fundamentals before moving into larger product and leadership responsibilities.',
+  },
+  {
+    period: '2022',
+    title: 'Baccalaureate Series D',
+    org: 'Lycée Général Leclerc, Yaoundé',
+    text: 'Scientific foundation supporting analytical problem-solving and engineering studies.',
   },
 ];
 
@@ -250,10 +263,15 @@ const Portfolio = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
 
-  const downloadCV = () => {
+  const cvFiles = [
+    { label: 'CV EN', href: '/ABOMBA_Raphael-CV-EN.pdf', download: 'ABOMBA_Raphael-CV-EN.pdf' },
+    { label: 'CV FR', href: '/ABOMBA_Raphael-CV-FR.pdf', download: 'ABOMBA_Raphael-CV-FR.pdf' },
+  ];
+
+  const downloadCV = (file = cvFiles[0]) => {
     const link = document.createElement('a');
-    link.href = '/CV_Raphael_ABOMBA.pdf';
-    link.download = 'CV_Raphael_ABOMBA.pdf';
+    link.href = file.href;
+    link.download = file.download;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -283,8 +301,8 @@ const Portfolio = () => {
           <button type="button" className="icon-button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle color mode">
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button type="button" className="nav-cta" onClick={downloadCV}>
-            <Download size={16} /> CV
+          <button type="button" className="nav-cta" onClick={() => downloadCV()}>
+            <Download size={16} /> CV EN
           </button>
           <button type="button" className="mobile-toggle" onClick={() => setMenuOpen((value) => !value)} aria-label="Toggle menu">
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -319,6 +337,9 @@ const Portfolio = () => {
               <a href="mailto:assomabomba@gmail.com" className="secondary-button">
                 Start a conversation
               </a>
+              <a href="/ABOMBA_Raphael-CV-FR.pdf" download className="secondary-button">
+                CV français <ArrowDownToLine size={18} />
+              </a>
             </div>
           </div>
 
@@ -327,7 +348,7 @@ const Portfolio = () => {
             <h2>ABOMBA Raphaël</h2>
             <p>Product-minded builder with full-stack depth, leadership range, and a bias for systems that move businesses forward.</p>
             <div className="signature-grid">
-              <span>Next.js</span><span>Laravel</span><span>TypeScript</span><span>AI APIs</span><span>Docker</span><span>Automation</span>
+              <span>Next.js</span><span>Laravel</span><span>Vue.js</span><span>Claude API</span><span>Docker</span><span>Mobile Money</span>
             </div>
           </aside>
         </div>
@@ -496,7 +517,7 @@ const Portfolio = () => {
         <div className="impact-list">
           <article><Briefcase size={20} /><span>Technical project coordination and delivery standards</span></article>
           <article><Network size={20} /><span>Secure roles, authentication, integrations, and CI/CD foundations</span></article>
-          <article><Award size={20} /><span>Certifications in project management, security, web programming, and networks</span></article>
+          <article><Award size={20} /><span>Coursera project management, Alison computer security, and ISTIA computer network certifications</span></article>
           <article><Globe2 size={20} /><span>French fluent, professional English, internationally oriented availability</span></article>
         </div>
       </section>
@@ -537,6 +558,11 @@ const Portfolio = () => {
         <div className="contact-actions">
           <a href="mailto:assomabomba@gmail.com" className="primary-button"><Mail size={18} /> assomabomba@gmail.com</a>
           <a href="tel:+237654746532" className="secondary-button"><Phone size={18} /> +237 654 746 532</a>
+          {cvFiles.map((file) => (
+            <a key={file.href} href={file.href} download={file.download} className="secondary-button">
+              <Download size={18} /> Download {file.label}
+            </a>
+          ))}
         </div>
         <div className="social-row">
           <a href="https://github.com/BryanSeidy" target="_blank" rel="noopener noreferrer"><Github size={18} /> GitHub</a>

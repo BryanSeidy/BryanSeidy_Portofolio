@@ -17,6 +17,8 @@ export const metadata = {
     'Product Engineer',
     'Technical Project Lead',
     'AI Automation Builder',
+    'Mobile Money Integration',
+    'Vue.js Developer',
     'Next.js Developer',
     'SaaS Developer',
   ],
@@ -34,7 +36,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ABOMBA Raphaël — Product-Minded Full Stack Developer',
-    description: 'SaaS platforms, AI automations, and technical project leadership from Douala, Cameroon.',
+    description: 'SaaS platforms, AI automations, Mobile Money integrations, and technical project leadership from Douala, Cameroon.',
   },
   alternates: {
     canonical: siteUrl,
