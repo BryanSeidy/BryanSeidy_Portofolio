@@ -25,8 +25,10 @@ const structuredData = {
     'Business Process Automation',
     'Next.js',
     'Laravel',
+    'Vue.js',
     'TypeScript',
     'Python',
+    'Claude API',
   ],
 };
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
+  ArrowDownToLine,
   ArrowUpRight,
   Award,
   Bot,
@@ -30,6 +31,29 @@ import {
   Zap,
 } from 'lucide-react';
 
+const navItems = [
+  { id: 'home', label: 'Index' },
+  { id: 'story', label: 'Story' },
+  { id: 'work', label: 'Work' },
+  { id: 'expertise', label: 'Systems' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'timeline', label: 'Timeline' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const analysisHighlights = [
+  'Positioning evolved from software engineering student to product-minded full stack developer and technical project lead.',
+  'Strongest proof: ownership of MIC SARL technical direction, C-CONNECT MVP, WeTell automation, and Patrie Art platform delivery.',
+  'Hidden strength: connecting product thinking, execution discipline, AI automation, infrastructure, and stakeholder communication.',
+  'Business impact signal: faster data workflows, production-ready systems, improved publishing operations, and user-centered platforms.',
+];
+
+const metrics = [
+  { value: '3+', label: 'years building web products' },
+  { value: '45%', label: 'automation rate reported on WeTell workflows' },
+  { value: '1k+', label: 'users reached through Patrie Art' },
+  { value: '4', label: 'flagship systems presented as case studies' },
+];
 const languages = {
   en: { label: 'English', short: 'EN', flag: '🇬🇧', htmlLang: 'en' },
   fr: { label: 'Français', short: 'FR', flag: '🇫🇷', htmlLang: 'fr' },
@@ -342,88 +366,87 @@ const content = {
       { value: '3+', label: 'années à construire et livrer des systèmes web' },
       { value: '1k+', label: 'utilisateurs touchés par des expériences livrées' },
     ],
-    story: {
-      label: '01 · À propos',
-      title: 'Je ne me limite pas au code. Je transforme des besoins business en systèmes opérationnels.',
-      body: [
-        'Mon parcours technique s’est construit autour de la responsabilité. Chez MIC SARL, je suis sorti de la simple exécution pour prendre en charge l’avancement technique du département : planifier les initiatives, encadrer des stagiaires, améliorer les standards de livraison et transformer des idées business en plateformes utilisables.',
-        'Cette expérience a changé ma manière de construire. Je ne démarre pas par les fonctionnalités ; je commence par le problème, les utilisateurs, les contraintes opérationnelles et le résultat attendu par l’entreprise. Ensuite, je définis le chemin le plus crédible vers le produit : architecture, interfaces, modèle de données, intégrations, déploiement et maintenance.',
-        'Je développe ma carrière comme product engineer et lead technique capable de travailler avec des fondateurs, CTOs, recruteurs et équipes produit. Mon objectif est une technologie utile : SaaS, applications métier, workflows IA, automatisation et expériences web qui améliorent concrètement le travail.',
-      ],
-      highlights: [
-        'Je place le contexte produit avant la complexité technique.',
-        'Je prends en charge le passage de l’idée à la livraison.',
-        'Je communique clairement avec les parties prenantes, contributeurs et utilisateurs.',
-        'J’utilise l’IA et l’automatisation lorsqu’elles créent un vrai levier opérationnel.',
-      ],
-    },
-    value: {
-      label: '02 · Proposition de valeur',
-      title: 'Pourquoi les équipes travaillent avec moi',
-      intro:
-        'J’apporte plus qu’une capacité de développement : du jugement produit, de la discipline d’exécution et la capacité de relier les choix techniques aux résultats business.',
-      cards: [
-        { icon: 'product', title: 'Vision Produit', description: 'Je transforme des idées floues en décisions produit, parcours utilisateurs et priorités de release.', value: 'Valeur business : moins de fonctionnalités inutiles et un accès marché plus clair.', outcome: 'Résultat : MVP plus précis, meilleurs choix UX et alignement plus solide.' },
-        { icon: 'execution', title: 'Exécution Full Stack', description: 'Je livre des systèmes complets : frontend, backend, bases de données, APIs et déploiement.', value: 'Valeur business : un profil capable de comprendre toute la surface produit.', outcome: 'Résultat : livraison plus rapide, transitions plus propres et bases maintenables.' },
-        { icon: 'leadership', title: 'Leadership Technique', description: 'Je coordonne les initiatives, accompagne les contributeurs et transforme l’ambiguïté en plan d’exécution.', value: 'Valeur business : l’équipe avance avec clarté au lieu de disperser ses efforts.', outcome: 'Résultat : meilleurs standards, responsabilité accrue et progression prévisible.' },
-        { icon: 'ai', title: 'Intégration IA', description: 'J’intègre l’IA lorsqu’elle améliore les workflows, la décision ou l’expérience utilisateur.', value: 'Valeur business : des opérations plus intelligentes sans complexité inutile.', outcome: 'Résultat : assistants, workflows intelligents et fonctionnalités IA utiles.' },
-        { icon: 'automation', title: 'Automatisation des Processus', description: 'J’identifie les tâches répétitives et construis des systèmes qui réduisent l’effort manuel.', value: 'Valeur business : plus de temps pour les décisions, les clients et la croissance.', outcome: 'Résultat : scraping, normalisation, reporting et pipelines opérationnels.' },
-        { icon: 'business', title: 'Alignement Business', description: 'Je prends des décisions techniques en tenant compte du budget, de la vitesse, de la maintenance et de la valeur client.', value: 'Valeur business : la technologie sert l’objectif au lieu de devenir l’objectif.', outcome: 'Résultat : architecture pragmatique, livraison mesurable et adoption facilitée.' },
-      ],
-    },
-    projects: {
-      label: '03 · Cas d’étude',
-      title: 'Des produits et plateformes construits autour d’une utilité mesurable.',
-      intro: 'Chaque projet est présenté comme un problème produit, pas comme une simple capture d’écran. L’accent est mis sur le besoin business, le système livré et ma contribution.',
-      view: 'Ouvrir le projet', contribution: 'Contributions clés', impact: 'Impact business', stack: 'Technologies', problem: 'Problème', solution: 'Solution', outcome: 'Résultat',
-      items: [
-        { title: 'MIC SARL', category: 'Plateforme Multi-SaaS · Leadership Technique', link: 'https://mouahaindustrycompanysarl.com/', image: '/images/projects/civika.png', problem: 'MIC SARL avait besoin d’une base technique fiable pour plusieurs modules business : e-learning, e-commerce, immobilier et services.', solution: 'J’ai contribué à l’architecture produit, coordonné l’exécution technique, accompagné le déploiement et la maintenance, puis soutenu l’intégration Mobile Money.', technologies: 'Next.js, React, Laravel, MySQL, Tailwind CSS, APIs, Docker, GitHub, Mobile Money', outcome: 'Une direction multi-module plus structurée, des bases réutilisables et une meilleure discipline de livraison.', contributions: ['Pilotage d’initiatives techniques et traduction des besoins business en priorités d’implémentation.', 'Structuration d’un système multi-module autour de l’apprentissage, du commerce, de l’immobilier et des services.', 'Support de l’intégration Mobile Money, du déploiement, de la maintenance et de la coordination.'], impact: 'Renforcement de la capacité de MIC SARL à livrer des services digitaux et à évoluer vers un écosystème produit scalable.' },
-        { title: 'WeTell Africa', category: 'Automatisation · Plateforme de traitement de données', link: 'https://wetellafrica.com/', image: '/images/projects/cinema-scraper.png', problem: 'L’équipe devait collecter, nettoyer et organiser des informations fragmentées sans perdre trop de temps sur des tâches répétitives.', solution: 'J’ai construit des workflows d’automatisation centrés sur le scraping, la normalisation et des sorties structurées pour l’analyse.', technologies: 'Python, scraping, normalisation de données, scripts d’automatisation, datasets structurés', outcome: 'Un workflow plus efficace avec un gain d’automatisation rapporté de 45% et des données plus propres.', contributions: ['Conception de workflows de scraping orientés qualité.', 'Création d’une logique de normalisation pour réutiliser l’information.', 'Réduction du travail manuel répétitif et amélioration de la productivité.'], impact: 'L’équipe peut concentrer davantage d’énergie sur l’analyse, la décision et les activités à plus forte valeur.' },
-        { title: 'Patrie Art', category: 'Site institutionnel · Présence web', link: 'https://patrieart.com/', image: '/images/projects/patrie-art.png', problem: 'Patrie Art avait besoin d’une présence en ligne crédible, visible et maintenable.', solution: 'J’ai livré et maintenu une expérience web orientée clarté, crédibilité institutionnelle et accès utilisateur.', technologies: 'WordPress, PHP, HTML, CSS, amélioration UX, structure de contenu, maintenance', outcome: 'Une présence digitale plus forte et un accès amélioré aux informations institutionnelles.', contributions: ['Amélioration de la structure et de l’utilisabilité du site.', 'Support de la visibilité grâce à une présentation plus claire.', 'Maintenance de l’expérience pour les visiteurs et partenaires.'], impact: 'La crédibilité publique de l’organisation est renforcée et son travail devient plus facile à découvrir et partager.' },
-        { title: 'C-CONNECT', category: 'MVP fondateur · Plateforme collaborative panafricaine', link: 'https://github.com/BryanSeidy/C-CONNECT', image: '/images/projects/civika.png', problem: 'Les organisations et partenaires africains ont besoin de mieux se connecter, collaborer et gérer des interactions numériques fiables.', solution: 'J’ai fondé et développé la base MVP : design produit, authentification, gestion utilisateurs, rôles et architecture scalable.', technologies: 'Next.js, React, Node.js, TypeScript, Tailwind CSS, PostgreSQL, authentification, GitHub, CI/CD', outcome: 'Une base MVP lançable autour de l’accès sécurisé, de la gestion utilisateurs et d’une direction produit scalable.', contributions: ['Définition de la vision produit et transformation en périmètre MVP.', 'Implémentation de l’authentification et de la gestion utilisateurs.', 'Architecture pensée pour la collaboration, les rôles et les workflows partenaires.'], impact: 'Création d’une base produit et technique pour une plateforme panafricaine à potentiel écosystémique.' },
-      ],
-    },
-    services: {
-      label: '04 · Services', title: 'Là où je crée de la valeur pour les équipes, fondateurs et clients', intro: 'J’apporte le plus de valeur lorsque la livraison technique demande une vraie lecture produit.',
-      items: [
-        { icon: 'delivery', title: 'Développement Produit', what: 'Je conçois et construis des SaaS, MVPs et applications métier du concept au déploiement.', why: 'Les équipes modernes ont besoin de produits utilisables, maintenables et livrés assez vite pour apprendre du marché.', impact: 'Impact : validation plus rapide, meilleures fondations et passage crédible du prototype à la production.' },
-        { icon: 'ai', title: 'Solutions IA', what: 'Je développe des assistants IA, automatisations et fonctionnalités alimentées par l’IA.', why: 'L’IA crée de la valeur lorsqu’elle réduit la friction, améliore la décision ou enrichit l’expérience.', impact: 'Impact : workflows plus intelligents, moins de tâches manuelles et expériences différenciantes.' },
-        { icon: 'backend', title: 'Ingénierie Backend', what: 'Je construis APIs, authentification, modèles de données, logique métier et intégrations.', why: 'Un backend solide protège le produit quand l’usage, la complexité et les attentes augmentent.', impact: 'Impact : systèmes fiables, accès sécurisé, logique maintenable et intégrations liées au revenu.' },
-        { icon: 'architecture', title: 'Leadership Technique', what: 'Je coordonne les projets, planifie l’exécution, guide les contributeurs et décide l’architecture.', why: 'L’exécution échoue lorsque les choix techniques, priorités et communications ne sont pas alignés.', impact: 'Impact : roadmaps plus claires, meilleur rythme de livraison et responsabilité renforcée.' },
-      ],
-    },
-    expertise: { label: '05 · Stack & méthode', title: 'Une boîte à outils organisée autour des résultats.', intro: 'Je choisis les outils de façon pragmatique pour livrer, faire évoluer et maintenir le produit.', items: [ { title: 'Expérience Frontend', note: 'Interfaces, dashboards, landing pages et parcours produit.', tools: 'React, Next.js, TypeScript, JavaScript, Tailwind CSS' }, { title: 'Systèmes Backend', note: 'APIs, authentification, règles métier et données.', tools: 'Node.js, Laravel, PHP, MySQL, PostgreSQL' }, { title: 'Automatisation & Données', note: 'Scraping, normalisation, reporting et automatisation.', tools: 'Python, scripts, APIs, datasets structurés' }, { title: 'Livraison & Opérations', note: 'Déploiement, maintenance, collaboration et coordination.', tools: 'Docker, GitHub, CI/CD, documentation, planning' } ] },
-    finalCta: { eyebrow: 'Construisons quelque chose d’utile', title: 'Vous cherchez un partenaire technique qui comprend le business autant que l’ingénierie ?', text: 'Si vous recrutez un product engineer, un développeur full stack avec ownership ou une personne capable de piloter un build technique de l’idée au déploiement, échangeons.', primary: 'Démarrer la conversation', phone: 'M’appeler' },
-    blueprint: { label: '06 · Stratégie portfolio', title: 'L’expérience est pensée pour la crédibilité internationale et la conversion.', items: ['Hiérarchie : hero, histoire, proposition de valeur, cas d’étude, services, expertise et CTA final.', 'Multilingue : contenu anglais, français et japonais adapté culturellement avec switch sans rechargement.', 'UX : motion élégant, projets lisibles, cartes premium type SaaS, contraste accessible et CTAs clairs.', 'SEO : product engineer, leadership technique, SaaS, automatisation IA et disponibilité internationale depuis le Cameroun.', 'Conversion : recruteurs, CTOs, fondateurs et clients comprennent rapidement ce que je construis et comment me contacter.', 'Preuve : projets reformulés en cas d’étude avec problème, solution, contribution, résultat et impact business.'] },
-    contact: { email: 'assomabomba@gmail.com', phone: '+237 654 746 532', socials: 'Profils professionnels', backTop: 'Retour en haut ↑' },
+    results: ['Platform deployed online', 'More than 1,000 users reached', 'Improved cultural visibility'],
+    impact: 'Gave Patrie Art a credible digital home and expanded access to its cultural work.',
   },
-  ja: {
-    nav: [
-      { id: 'home', label: 'ホーム' },
-      { id: 'story', label: '概要' },
-      { id: 'value', label: '価値' },
-      { id: 'work', label: '実績' },
-      { id: 'services', label: 'サービス' },
-      { id: 'contact', label: '連絡' },
-    ],
-    hero: {
-      kicker: 'プロダクト志向のフルスタック開発者 & テクニカルプロジェクトリード',
-      headline: '私は、事業課題を解決するデジタルプロダクトを設計し、開発し、リードします。',
-      support: 'プロダクト戦略からデプロイまで、スケーラブルなWebプラットフォーム、業務自動化、AIを活用した体験を形にします。',
-      paragraph: '私の強みは、エンジニアリング、プロダクト思考、技術リーダーシップをつなぐことです。方向性を整理し、アーキテクチャを設計し、主要機能を実装し、決済やAIワークフローを統合し、実際に使われる状態まで届けます。',
-      primaryCta: 'プロジェクトを相談する', secondaryCta: 'ケーススタディを見る', availability: 'リモート職、テクニカルリード、プレミアム開発案件に対応可能', cardTitle: '提供できること', cardText: '本番運用を見据えたプラットフォーム、保守しやすい技術基盤、意味のある自動化、そしてアイデアをローンチへ進めるためのコミュニケーション力です。', signature: ['SaaS プラットフォーム', 'AI・自動化', 'Mobile Money', '技術リード'],
-    },
-    metrics: [ { value: '4', label: '主要プロジェクトをビジネスケースとして整理' }, { value: '45%', label: 'WeTell Africaで報告された自動化改善' }, { value: '3+', label: 'Webシステムの開発・提供経験年数' }, { value: '1k+', label: '提供したWeb体験が届けたユーザー数' } ],
-    story: { label: '01 · 私について', title: '私はコードを書くだけではなく、事業ニーズを動くシステムに変えます。', body: ['私のキャリアは「オーナーシップ」によって磨かれてきました。MIC SARLでは単なる実装担当ではなく、技術部門の推進、施策の計画、インターンの指導、納品基準の改善、事業アイデアのプロダクト化に関わってきました。', 'その経験により、開発の出発点が変わりました。機能から始めるのではなく、課題、ユーザー、運用制約、事業として必要な成果から考えます。そのうえで、アーキテクチャ、UI、データ、連携、デプロイ、保守までを現実的な道筋に落とし込みます。', '私は、創業者、CTO、採用担当、プロダクトチームと対話できるプロダクトエンジニア／テクニカルリードを目指しています。SaaS、業務アプリ、AIワークフロー、自動化、Web体験を通じて、仕事の進め方を良くする技術を届けます。'], highlights: ['技術の複雑さより先に、プロダクトの文脈を理解します。', 'アイデアから設計、実装、納品まで責任を持ちます。', '関係者、開発メンバー、ユーザーに明確に伝えます。', 'AIと自動化は、運用上の効果がある場合に活用します。'] },
-    value: { label: '02 · 提供価値', title: 'チームが私と働く理由', intro: '私は単なる開発リソースではなく、プロダクト判断、実行力、技術判断を事業成果につなげる視点を提供します。', cards: [ { icon: 'product', title: 'プロダクト思考', description: '曖昧なアイデアを、スコープ、ユーザーフロー、リリース優先度へ落とし込みます。', value: '事業価値：不要な機能を減らし、市場投入までの道筋を明確にします。', outcome: '成果：より鋭いMVP、良いUX判断、関係者の合意形成。' }, { icon: 'execution', title: 'フルスタック実行力', description: 'フロントエンド、バックエンド、DB、API、デプロイまで一貫して構築します。', value: '事業価値：プロダクト全体を理解して動ける開発者を得られます。', outcome: '成果：速い納品、スムーズな連携、保守しやすい基盤。' }, { icon: 'leadership', title: '技術リーダーシップ', description: '施策を整理し、メンバーを支援し、曖昧さを実行計画に変えます。', value: '事業価値：チームが迷わず前に進めます。', outcome: '成果：標準化、責任の明確化、予測しやすい進捗。' }, { icon: 'ai', title: 'AI統合', description: 'AIが業務、意思決定、ユーザー体験を改善する場面で導入します。', value: '事業価値：不要な複雑さなしに、より賢い業務を実現します。', outcome: '成果：AIアシスタント、スマートワークフロー、有用なAI機能。' }, { icon: 'automation', title: 'プロセス自動化', description: '繰り返し作業を見つけ、手作業を減らすシステムを作ります。', value: '事業価値：チームの時間を判断、顧客、成長へ使えます。', outcome: '成果：スクレイピング、正規化、レポート、運用自動化。' }, { icon: 'business', title: '事業との整合', description: '予算、速度、保守性、顧客価値を踏まえて技術判断をします。', value: '事業価値：技術が目的化せず、事業目的に貢献します。', outcome: '成果：現実的な設計、測定可能な納品、導入されるプロダクト。' } ] },
-    projects: { label: '03 · ケーススタディ', title: '測定可能な有用性を中心に構築したプロダクト。', intro: '各プロジェクトは単なるスクリーンショットではなく、課題、解決策、成果、貢献を明確に示します。', view: 'プロジェクトを見る', contribution: '主な貢献', impact: '事業インパクト', stack: '技術', problem: '課題', solution: '解決策', outcome: '成果', items: [ { title: 'MIC SARL', category: 'マルチSaaS · 技術リード', link: 'https://mouahaindustrycompanysarl.com/', image: '/images/projects/civika.png', problem: 'eラーニング、EC、不動産、サービスを含む複数モジュールに対応できる信頼性の高い技術基盤が必要でした。', solution: 'プロダクトアーキテクチャ、技術実行、デプロイ、保守、Mobile Money連携を支援しました。', technologies: 'Next.js, React, Laravel, MySQL, Tailwind CSS, APIs, Docker, GitHub, Mobile Money', outcome: 'マルチモジュールの方向性、再利用可能な基盤、より明確な納品体制を実現しました。', contributions: ['事業ニーズを実装優先度に変換し、技術施策をリード。', '学習、商取引、不動産、サービスを横断する構造を整理。', 'Mobile Money連携、デプロイ、保守、メンバー調整を支援。'], impact: 'MIC SARLがデジタルサービスを提供し、スケーラブルなプロダクト群へ進む力を高めました。' }, { title: 'WeTell Africa', category: '自動化 · データ処理プラットフォーム', link: 'https://wetellafrica.com/', image: '/images/projects/cinema-scraper.png', problem: '断片化された情報の収集、整理、正規化に多くの手作業が発生していました。', solution: 'スクレイピング、正規化、構造化出力を中心とした自動化ワークフローを構築しました。', technologies: 'Python, scraping, data normalization, automation scripts, structured datasets', outcome: '報告ベースで45%の自動化改善と、より扱いやすいデータフローを実現しました。', contributions: ['量より品質を重視したスクレイピング設計。', '再利用しやすい情報にするための正規化ロジック。', '反復作業を削減し、生産性を改善。'], impact: 'チームが収集作業ではなく、分析と意思決定に集中できるようにしました。' }, { title: 'Patrie Art', category: '組織サイト · Webプレゼンス', link: 'https://patrieart.com/', image: '/images/projects/patrie-art.png', problem: '信頼でき、見つけやすく、保守しやすいオンラインプレゼンスが必要でした。', solution: '明確さ、信頼性、アクセス性、継続的な保守を意識したWeb体験を提供しました。', technologies: 'WordPress, PHP, HTML, CSS, UX improvement, content structure, maintenance', outcome: '組織情報へのアクセスとデジタル上の信頼性が向上しました。', contributions: ['サイト構造と使いやすさを改善。', '明確な情報提示と保守を支援。', '訪問者と関係者に安定した体験を提供。'], impact: '組織の活動がより発見されやすく、理解されやすくなりました。' }, { title: 'C-CONNECT', category: '創業者主導MVP · パンアフリカ連携プラットフォーム', link: 'https://github.com/BryanSeidy/C-CONNECT', image: '/images/projects/civika.png', problem: 'アフリカの組織やパートナーが、信頼できる形でつながり、協働する仕組みが必要です。', solution: 'プロダクト設計、認証、ユーザー管理、ロール構造、拡張可能なアーキテクチャを含むMVP基盤を構築しました。', technologies: 'Next.js, React, Node.js, TypeScript, Tailwind CSS, PostgreSQL, authentication, GitHub, CI/CD', outcome: '安全なアクセスとユーザー管理を中心に、ローンチ可能なMVP基盤を作りました。', contributions: ['プロダクトビジョンをMVPスコープに変換。', '認証とユーザー管理を実装。', '将来の連携、ロール、パートナーワークフローに備えた設計。'], impact: 'エコシステム規模の協働を支えるパンアフリカ型プラットフォームの基礎を作りました。' } ] },
-    services: { label: '04 · サービス', title: 'チーム、創業者、クライアントに価値を提供する領域', intro: '技術納品にプロダクト思考が必要な場面で最も価値を発揮します。', items: [ { icon: 'delivery', title: 'プロダクト開発', what: 'SaaS、MVP、業務アプリを構想からデプロイまで設計・開発します。', why: '現代のチームには、使いやすく保守しやすく、学習のために素早く出せるプロダクトが必要です。', impact: '効果：検証の高速化、きれいな基盤、プロトタイプから本番への道筋。' }, { icon: 'ai', title: 'AIソリューション', what: 'AIアシスタント、ワークフロー自動化、AI機能を構築します。', why: 'AIは摩擦を減らし、意思決定や体験を良くするときに価値を生みます。', impact: '効果：賢い業務、手作業削減、差別化された体験。' }, { icon: 'backend', title: 'バックエンド開発', what: 'API、認証、データモデル、業務ロジック、連携を実装します。', why: '強いバックエンドは、利用拡大と複雑化に耐えるための基盤です。', impact: '効果：信頼性、安全なアクセス、保守可能なロジック、収益を支える連携。' }, { icon: 'architecture', title: '技術リーダーシップ', what: 'プロジェクト調整、技術計画、メンバー支援、アーキテクチャ判断を行います。', why: '技術判断、優先順位、コミュニケーションが揃わないと実行は失速します。', impact: '効果：明確なロードマップ、良い納品リズム、高い責任感。' } ] },
-    expertise: { label: '05 · 技術スタックと進め方', title: '成果から逆算して使う技術ツールキット。', intro: '技術リストを並べるためではなく、出荷し、拡張し、保守するために適切なツールを選びます。', items: [ { title: 'フロントエンド体験', note: 'UI、ダッシュボード、LP、プロダクトフロー。', tools: 'React, Next.js, TypeScript, JavaScript, Tailwind CSS' }, { title: 'バックエンドシステム', note: 'API、認証、業務ルール、データモデル。', tools: 'Node.js, Laravel, PHP, MySQL, PostgreSQL' }, { title: '自動化・データ', note: 'スクレイピング、正規化、レポート、業務自動化。', tools: 'Python, scripts, APIs, structured datasets' }, { title: 'デリバリー・運用', note: 'デプロイ、保守、協働、技術調整。', tools: 'Docker, GitHub, CI/CD, documentation, planning' } ] },
-    finalCta: { eyebrow: '意味のあるものを作りましょう', title: '事業とエンジニアリングの両方を理解する技術パートナーが必要ですか？', text: 'プロダクトエンジニア、オーナーシップのあるフルスタック開発者、またはアイデアからデプロイまでリードできる人材を探しているなら、ぜひお話ししましょう。', primary: '相談を始める', phone: '電話する' },
-    blueprint: { label: '06 · ポートフォリオ戦略', title: '国際的な信頼性とコンバージョンを意識した構成です。', items: ['構成：ヒーロー、ストーリー、価値提案、ケーススタディ、サービス、専門性、最終CTA。', '多言語：英語、フランス語、日本語を文化的に調整し、リロードなしで切替。', 'UX：上品なモーション、見つけやすい実績、SaaS風カード、アクセシブルなコントラスト、明確なCTA。', 'SEO：プロダクトエンジニア、技術リード、SaaS開発、AI自動化、カメルーンからの国際対応。', '導線：採用担当、CTO、創業者、クライアントが価値と連絡方法をすぐ理解できます。', '証明：課題、解決策、貢献、成果、事業インパクトでプロジェクトをケース化。'] },
-    contact: { email: 'assomabomba@gmail.com', phone: '+237 654 746 532', socials: 'プロフィール', backTop: 'トップへ戻る ↑' },
+];
+
+const expertise = [
+  {
+    title: 'Frontend systems',
+    tools: 'Next.js, React, Vue.js, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS',
+    note: 'Interfaces with editorial rhythm, responsive precision, and product-level usability.',
   },
-};
+  {
+    title: 'Backend & APIs',
+    tools: 'Laravel, Node.js, Next.js, PHP, Python, Java, API REST',
+    note: 'Secure service layers, business logic, integrations, and maintainable code foundations.',
+  },
+  {
+    title: 'Data & infrastructure',
+    tools: 'MySQL, PostgreSQL, SQLite, Docker, Linux, GitHub, CI/CD, Nginx, Postman, Office 365',
+    note: 'Data models, deployment pipelines, environments, and operational reliability.',
+  },
+  {
+    title: 'AI & automation',
+    tools: 'OpenAI API, Gemini API, Claude API, AI agents, scraping, data processing, prompt engineering, automation',
+    note: 'Automation systems that reduce workload and unlock faster business decisions.',
+  },
+];
+
+const timeline = [
+  {
+    period: '2025—2026',
+    title: 'Responsable du Département Technique & Full Stack Developer',
+    org: 'MIC SARL',
+    text: 'Leading technical project direction, development coordination, trainee supervision, Mobile Money integration, and AI automation initiatives.',
+  },
+  {
+    period: '2025—Present',
+    title: 'Founder & Developer',
+    org: 'C-CONNECT',
+    text: 'Conceiving and building a secure pan-African collaborative platform with scalable full-stack architecture.',
+  },
+  {
+    period: '2025',
+    title: 'Web & Automation Developer',
+    org: 'WeTell Africa Group',
+    text: 'Built scraping and normalization tooling that automated 45% of repetitive data-processing workflows.',
+  },
+  {
+    period: '2024',
+    title: 'Web Developer',
+    org: 'Patrie Art',
+    text: 'Delivered and maintained an institutional website that reached more than 1,000 users.',
+  },
+  {
+    period: '2025—Present',
+    title: "Bachelor's in Software Engineering",
+    org: 'University Institute of Technology of Douala',
+    text: 'Continuing formal engineering training while building production products and leading technical execution.',
+  },
+  {
+    period: '2024',
+    title: 'HND in Software Engineering',
+    org: 'University Institute of the Gulf of Guinea',
+    text: 'Validated software engineering fundamentals before moving into larger product and leadership responsibilities.',
+  },
+  {
+    period: '2022',
+    title: 'Baccalaureate Series D',
+    org: 'Lycée Général Leclerc, Yaoundé',
+    text: 'Scientific foundation supporting analytical problem-solving and engineering studies.',
+  },
+];
+
+const deliverables = [
+  'Sitemap: Index, Story, Selected Work, Case Studies, Expertise, Leadership & Impact, Timeline, Contact.',
+  'Core message: product-minded full stack developer who turns business ideas into shipped systems.',
+  'Tagline: Engineering useful products, automations, and platforms with product discipline.',
+  'Elevator pitch: Raphaël helps teams transform ideas, data, and operational pain points into reliable web platforms and automated workflows.',
+  'Design system: dark editorial canvas, large typography, asymmetric grids, restrained blue accent, glass panels, soft gradients, and cinematic scroll pacing.',
+  'Conversion path: read positioning, trust the proof, inspect case studies, understand technical depth, then start a focused conversation.',
+];
 
 const Portfolio = () => {
   const [theme, setTheme] = useState('dark');
@@ -470,7 +493,19 @@ const Portfolio = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [t.nav]);
 
-  const themeLabel = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+  const cvFiles = [
+    { label: 'CV EN', href: '/ABOMBA_Raphael-CV-EN.pdf', download: 'ABOMBA_Raphael-CV-EN.pdf' },
+    { label: 'CV FR', href: '/ABOMBA_Raphael-CV-FR.pdf', download: 'ABOMBA_Raphael-CV-FR.pdf' },
+  ];
+
+  const downloadCV = (file = cvFiles[0]) => {
+    const link = document.createElement('a');
+    link.href = file.href;
+    link.download = file.download;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <main className={`portfolio-shell ${theme === 'light' ? 'light' : ''}`}>
@@ -487,21 +522,11 @@ const Portfolio = () => {
           ))}
         </nav>
         <div className="nav-actions">
-          <div className="language-switcher" aria-label="Language selector">
-            {Object.entries(languages).map(([key, meta]) => (
-              <button
-                type="button"
-                className={language === key ? 'selected' : ''}
-                onClick={() => setLanguage(key)}
-                aria-pressed={language === key}
-                key={key}
-              >
-                <span aria-hidden="true">{meta.flag}</span>{meta.short}
-              </button>
-            ))}
-          </div>
-          <button className="icon-button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={themeLabel} type="button">
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          <button type="button" className="icon-button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle color mode">
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button type="button" className="nav-cta" onClick={() => downloadCV()}>
+            <Download size={16} /> CV EN
           </button>
           <a className="nav-cta" href="#contact"><Mail size={16} /> {t.nav[t.nav.length - 1].label}</a>
           <button className="mobile-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" type="button">
@@ -527,9 +552,15 @@ const Portfolio = () => {
             <p className="hero-lede reveal delay-2">{t.hero.support}</p>
             <p className="hero-positioning">{t.hero.paragraph}</p>
             <div className="hero-actions">
-              <a className="primary-button" href="#contact"><Mail size={18} /> {t.hero.primaryCta}</a>
-              <a className="secondary-button" href="#work">{t.hero.secondaryCta} <ArrowUpRight size={18} /></a>
-              <a className="secondary-button" href="/CV_Raphael_ABOMBA.pdf" download><Download size={18} /> CV</a>
+              <a href="#work" className="primary-button">
+                View selected work <ArrowUpRight size={18} />
+              </a>
+              <a href="mailto:assomabomba@gmail.com" className="secondary-button">
+                Start a conversation
+              </a>
+              <a href="/ABOMBA_Raphael-CV-FR.pdf" download className="secondary-button">
+                CV français <ArrowDownToLine size={18} />
+              </a>
             </div>
           </div>
           <aside className="hero-card" aria-label="Positioning summary">
@@ -539,7 +570,7 @@ const Portfolio = () => {
               <p>{t.hero.cardText}</p>
             </div>
             <div className="signature-grid">
-              {t.hero.signature.map((item) => <span key={item}>{item}</span>)}
+              <span>Next.js</span><span>Laravel</span><span>Vue.js</span><span>Claude API</span><span>Docker</span><span>Mobile Money</span>
             </div>
           </aside>
         </div>
@@ -675,6 +706,40 @@ const Portfolio = () => {
         </div>
       </section>
 
+      <section id="impact" className="section-shell impact-section">
+        <div className="impact-copy">
+          <span className="section-label">05 · Leadership & impact</span>
+          <h2>Built for teams that need momentum, clarity, and technical ownership.</h2>
+          <p>
+            I bring structure to execution: clarifying priorities, coordinating contributors, documenting standards, choosing pragmatic
+            architectures, and using automation where it creates real leverage.
+          </p>
+        </div>
+        <div className="impact-list">
+          <article><Briefcase size={20} /><span>Technical project coordination and delivery standards</span></article>
+          <article><Network size={20} /><span>Secure roles, authentication, integrations, and CI/CD foundations</span></article>
+          <article><Award size={20} /><span>Coursera project management, Alison computer security, and ISTIA computer network certifications</span></article>
+          <article><Globe2 size={20} /><span>French fluent, professional English, internationally oriented availability</span></article>
+        </div>
+      </section>
+
+      <section id="timeline" className="section-shell timeline-section">
+        <span className="section-label">06 · Experience timeline</span>
+        <h2>Progression through increasingly larger systems.</h2>
+        <div className="timeline">
+          {timeline.map((item) => (
+            <article className="timeline-item" key={`${item.period}-${item.org}`}>
+              <time>{item.period}</time>
+              <div>
+                <h3>{item.title}</h3>
+                <p className="timeline-org">{item.org}</p>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="section-shell blueprint-section">
         <span className="section-label">{t.blueprint.label}</span>
         <h2>{t.blueprint.title}</h2>
@@ -688,8 +753,13 @@ const Portfolio = () => {
         <h2>{t.finalCta.title}</h2>
         <p>{t.finalCta.text}</p>
         <div className="contact-actions">
-          <a href={`mailto:${t.contact.email}`} className="primary-button"><Mail size={18} /> {t.finalCta.primary}</a>
-          <a href="tel:+237654746532" className="secondary-button"><Phone size={18} /> {t.finalCta.phone}</a>
+          <a href="mailto:assomabomba@gmail.com" className="primary-button"><Mail size={18} /> assomabomba@gmail.com</a>
+          <a href="https://wa.me/237654746532" className="secondary-button"><Phone size={18} /> +237 654 746 532</a>
+          {cvFiles.map((file) => (
+            <a key={file.href} href={file.href} download={file.download} className="secondary-button">
+              <Download size={18} /> Download {file.label}
+            </a>
+          ))}
         </div>
         <div className="social-row" aria-label={t.contact.socials}>
           <a href="https://github.com/BryanSeidy" target="_blank" rel="noopener noreferrer"><Github size={18} /> GitHub</a>
