@@ -13,7 +13,7 @@ const structuredData = {
   },
   email: 'mailto:abombaraphael1@gmail.com',
   telephone: '+237654746532',
-  url: 'https://abomba-raphael-portofolio.vercel.app',
+  url: 'https://abomba-raphael.vercel.app',
   sameAs: ['https://github.com/BryanSeidy', 'https://www.linkedin.com/in/abomba-raphael'],
   knowsAbout: [
     'Product Engineering',
