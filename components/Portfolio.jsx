@@ -164,7 +164,7 @@ const content = {
           title: 'MIC SARL',
           category: 'Multi-SaaS Platform · Technical Leadership',
           link: 'https://mouahaindustrycompanysarl.com/',
-          image: '/images/projects/civika.png',
+          image: '/images/projects/mic.png',
           problem:
             'MIC SARL needed a reliable technical foundation for multiple business modules: e-learning, e-commerce, real estate and services, with enough structure to support contributors and future growth.',
           solution:
@@ -202,7 +202,7 @@ const content = {
           title: 'Patrie Art',
           category: 'Institutional Website · Web Presence',
           link: 'https://patrieart.com/',
-          image: '/images/projects/patrie-art.png',
+          image: '/images/projects/patrie-art1.png',
           problem:
             'Patrie Art needed a credible online presence that could communicate its mission, improve visibility and remain maintainable over time.',
           solution:
@@ -221,7 +221,7 @@ const content = {
           title: 'C-CONNECT',
           category: 'Founder-Led MVP · Pan-African Collaboration Platform',
           link: 'https://github.com/BryanSeidy/C-CONNECT',
-          image: '/images/projects/civika.png',
+          image: '/images/projects/connect.png',
           problem:
             'Organizations and partners across the African ecosystem need more structured ways to connect, collaborate and manage trusted digital interactions.',
           solution:
