@@ -11,10 +11,10 @@ const structuredData = {
     addressLocality: 'Douala',
     addressCountry: 'Cameroon',
   },
-  email: 'mailto:assomabomba@gmail.com',
+  email: 'mailto:abombaraphael1@gmail.com',
   telephone: '+237654746532',
-  url: 'https://bryanseidy-portofolio.vercel.app',
-  sameAs: ['https://github.com/BryanSeidy', 'https://www.linkedin.com/in/seidy-bryan'],
+  url: 'https://abomba-raphael-portofolio.vercel.app',
+  sameAs: ['https://github.com/BryanSeidy', 'https://www.linkedin.com/in/abomba-raphael'],
   knowsAbout: [
     'Product Engineering',
     'Full Stack Development',
