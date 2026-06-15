@@ -693,8 +693,8 @@ const Portfolio = () => {
         </div>
         <div className="social-row" aria-label={t.contact.socials}>
           <a href="https://github.com/BryanSeidy" target="_blank" rel="noopener noreferrer"><Github size={18} /> GitHub</a>
-          <a href="https://www.linkedin.com/in/seidy-bryan" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /> LinkedIn</a>
-          <a href="https://bryanseidy-portofolio.vercel.app" target="_blank" rel="noopener noreferrer"><Globe2 size={18} /> Portfolio</a>
+          <a href="https://www.linkedin.com/in/abomba-raphael" target="_blank" rel="noopener noreferrer"><Linkedin size={18} /> LinkedIn</a>
+          <a href="https://abomba-raphael.vercel.app" target="_blank" rel="noopener noreferrer"><Globe2 size={18} /> Portfolio</a>
         </div>
       </section>
 
