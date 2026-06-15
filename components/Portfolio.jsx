@@ -306,7 +306,7 @@ const content = {
       ],
     },
     contact: {
-      email: 'assomabomba@gmail.com',
+      email: 'abombarapael1@gmail.com',
       phone: '+237 654 746 532',
       socials: 'Professional profiles',
       backTop: 'Back to top ↑',
@@ -689,7 +689,7 @@ const Portfolio = () => {
         <p>{t.finalCta.text}</p>
         <div className="contact-actions">
           <a href={`mailto:${t.contact.email}`} className="primary-button"><Mail size={18} /> {t.finalCta.primary}</a>
-          <a href="tel:+237654746532" className="secondary-button"><Phone size={18} /> {t.finalCta.phone}</a>
+          <a href="https://wa.me/237654746532" className="secondary-button"><Phone size={18} /> {t.finalCta.phone}</a>
         </div>
         <div className="social-row" aria-label={t.contact.socials}>
           <a href="https://github.com/BryanSeidy" target="_blank" rel="noopener noreferrer"><Github size={18} /> GitHub</a>
